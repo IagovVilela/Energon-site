@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1",
+    "title": "Sistemas Web Personalizados",
+    "description": "Desenvolvimento de sistemas web sob medida, totalmente adaptados às necessidades específicas do seu negócio.",
+    "icon": "Code"
+  },
+  {
+    "id": "2",
+    "title": "Sistemas de Gestão",
+    "description": "Soluções completas para gestão empresarial, controle de processos e otimização de operações.",
+    "icon": "Briefcase"
+  },
+  {
+    "id": "3",
+    "title": "Dashboards e Painéis",
+    "description": "Painéis administrativos modernos com visualizações de dados em tempo real e relatórios personalizados.",
+    "icon": "BarChart3"
+  },
+  {
+    "id": "4",
+    "title": "Automação de Processos",
+    "description": "Automatize tarefas repetitivas e aumente a produtividade da sua equipe com soluções inteligentes.",
+    "icon": "Zap"
+  },
+  {
+    "id": "5",
+    "title": "Sistemas Sob Demanda",
+    "description": "Desenvolvimento ágil de sistemas conforme sua necessidade, com entregas rápidas e de alta qualidade.",
+    "icon": "Rocket"
+  }
+]
+

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "1",
+    "name": "Sistema de Gestão Empresarial",
+    "description": "Sistema completo para gestão de empresas com módulos de vendas, estoque, financeiro e RH.",
+    "features": [
+      "Gestão de vendas e pedidos",
+      "Controle de estoque",
+      "Módulo financeiro",
+      "Gestão de RH",
+      "Relatórios personalizados"
+    ],
+    "customizable": true,
+    "tags": ["Gestão", "ERP", "Vendas"]
+  },
+  {
+    "id": "2",
+    "name": "Dashboard Analytics",
+    "description": "Painel administrativo com visualizações avançadas de dados e métricas em tempo real.",
+    "features": [
+      "Gráficos interativos",
+      "Métricas em tempo real",
+      "Exportação de relatórios",
+      "Filtros avançados",
+      "Notificações personalizadas"
+    ],
+    "customizable": true,
+    "tags": ["Dashboard", "Analytics", "BI"]
+  }
+]
+

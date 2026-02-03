@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Usuário Administrador (Único que pode acessar o painel)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Senha hash (segura)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Projetos do Portfólio
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String
+  imageUrl    String?  // URL da imagem ou placeholder
+  videoUrl    String?  // URL do vídeo (YouTube, Vimeo, etc.)
+  tags        String   // Armazenas tags separadas por vírgula (Ex: "React, Node, SQL")
+  link        String?  // Link externo do projeto
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  images      ProjectImage[]
+}
+
+model ProjectImage {
+  id        String   @id @default(cuid())
+  url       String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// Serviços Oferecidos
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  iconName    String   // Nome do ícone do Lucide (Ex: "Code", "Globe")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Configurações Gerais (Hero, Sobre Mim)
+model SiteConfig {
+  id          String   @id @default("config") // Sempre haverá apenas 1 registro
+  
+  // Hero Section
+  heroTitle       String
+  heroHighlight   String
+  heroDescription String
+  
+  // About Section
+  aboutTitle      String
+  aboutDescription String
+  
+  // Contacts
+  email           String
+  phone           String
+  location        String
+  githubUrl       String?
+  linkedinUrl     String?
+  instagramUrl    String?
+
+  updatedAt       DateTime @updatedAt
+}

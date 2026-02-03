@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1",
+    "title": "Sistemas Sob Medida",
+    "description": "Cada projeto é desenvolvido exclusivamente para atender suas necessidades específicas.",
+    "icon": "Settings"
+  },
+  {
+    "id": "2",
+    "title": "Design Moderno",
+    "description": "Interfaces modernas, intuitivas e responsivas que encantam seus usuários.",
+    "icon": "Palette"
+  },
+  {
+    "id": "3",
+    "title": "Código Escalável",
+    "description": "Arquitetura sólida e código limpo que cresce junto com seu negócio.",
+    "icon": "TrendingUp"
+  },
+  {
+    "id": "4",
+    "title": "Alta Performance",
+    "description": "Sistemas otimizados para velocidade e eficiência máxima.",
+    "icon": "Gauge"
+  },
+  {
+    "id": "5",
+    "title": "Suporte Contínuo",
+    "description": "Acompanhamento e suporte após a entrega para garantir o sucesso do projeto.",
+    "icon": "Headphones"
+  }
+]
+

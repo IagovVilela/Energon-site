@@ -1,0 +1,31 @@
+[
+  {
+    "id": "1",
+    "step": 1,
+    "title": "Entendimento da Necessidade",
+    "description": "Conversamos para entender profundamente suas necessidades e objetivos.",
+    "icon": "MessageCircle"
+  },
+  {
+    "id": "2",
+    "step": 2,
+    "title": "Proposta Personalizada",
+    "description": "Elaboramos uma proposta detalhada e personalizada para o seu projeto.",
+    "icon": "FileText"
+  },
+  {
+    "id": "3",
+    "step": 3,
+    "title": "Desenvolvimento",
+    "description": "Desenvolvemos seu sistema com qualidade, agilidade e acompanhamento constante.",
+    "icon": "Code"
+  },
+  {
+    "id": "4",
+    "step": 4,
+    "title": "Entrega e Suporte",
+    "description": "Entregamos o sistema pronto e oferecemos suporte contínuo para garantir o sucesso.",
+    "icon": "CheckCircle"
+  }
+]
+
