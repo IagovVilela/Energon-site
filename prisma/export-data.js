@@ -8,33 +8,33 @@ console.log('📂 Tentando ler banco de:', dbPath);
 
 // Configurar cliente manualmente para o arquivo específico
 const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url: `file:${dbPath}`
-        }
+  datasources: {
+    db: {
+      url: `file:${dbPath}`
     }
+  }
 });
 
 async function exportData() {
-    console.log('📊 Exportando SEUS dados do SQLite local...\n');
+  console.log('📊 Exportando SEUS dados do SQLite local...\\n');
 
-    try {
-        // Buscar todos os dados
-        const users = await prisma.user.findMany();
-        const projects = await prisma.project.findMany({
-            include: { images: true }
-        });
-        const services = await prisma.service.findMany();
-        const siteConfig = await prisma.siteConfig.findFirst();
+  try {
+    // Buscar todos os dados
+    const users = await prisma.user.findMany();
+    const projects = await prisma.project.findMany({
+      include: { images: true }
+    });
+    const services = await prisma.service.findMany();
+    const siteConfig = await prisma.siteConfig.findFirst();
 
-        console.log('✅ Dados encontrados:');
-        console.log(`   - Usuários: ${users.length}`);
-        console.log(`   - Projetos: ${projects.length}`);
-        console.log(`   - Serviços: ${services.length}`);
-        console.log(`   - Config: ${siteConfig ? 'Sim' : 'Não'}\n`);
+    console.log('✅ Dados encontrados:');
+    console.log(`   - Usuários: ${users.length}`);
+    console.log(`   - Projetos: ${projects.length}`);
+    console.log(`   - Serviços: ${services.length}`);
+    console.log(`   - Config: ${siteConfig ? 'Sim' : 'Não'}\\n`);
 
-        // Gerar código JavaScript para o seed
-        const seedCode = `const { PrismaClient } = require('@prisma/client');
+    // Gerar código JavaScript para o seed
+    const seedCode = `const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
@@ -67,11 +67,11 @@ async function main() {
     update: {},
     create: {
       id: '${siteConfig.id}',
-      heroTitle: \`${siteConfig.heroTitle.replace(/`/g, '\\`')}\`,
-      heroHighlight: \`${siteConfig.heroHighlight.replace(/`/g, '\\`')}\`,
-      heroDescription: \`${siteConfig.heroDescription.replace(/`/g, '\\`')}\`,
-      aboutTitle: \`${siteConfig.aboutTitle.replace(/`/g, '\\`')}\`,
-      aboutDescription: \`${siteConfig.aboutDescription.replace(/`/g, '\\`')}\`,
+      heroTitle: \`${siteConfig.heroTitle ? siteConfig.heroTitle.replace(/`/g, '\\`') : ''}\`,
+      heroHighlight: \`${siteConfig.heroHighlight ? siteConfig.heroHighlight.replace(/`/g, '\\`') : ''}\`,
+      heroDescription: \`${siteConfig.heroDescription ? siteConfig.heroDescription.replace(/`/g, '\\`') : ''}\`,
+      aboutTitle: \`${siteConfig.aboutTitle ? siteConfig.aboutTitle.replace(/`/g, '\\`') : ''}\`,
+      aboutDescription: \`${siteConfig.aboutDescription ? siteConfig.aboutDescription.replace(/`/g, '\\`') : ''}\`,
       email: '${siteConfig.email}',
       phone: '${siteConfig.phone}',
       location: '${siteConfig.location}',
@@ -87,17 +87,19 @@ async function main() {
   // 3. Projetos
   console.log('Criando projetos...');
   ${projects.map(project => {
-            const escapedTitle = project.title.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-            const escapedDescription = project.description.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-            return `
+      // Escape backticks for template literals
+      const safeTitle = project.title ? project.title.replace(/`/g, '\\`') : '';
+      const safeDescription = project.description ? project.description.replace(/`/g, '\\`') : '';
+
+      return `
   const project_${project.id.replace(/-/g, '_')} = await prisma.project.upsert({
     where: { id: '${project.id}' },
     update: {},
     create: {
       id: '${project.id}',
-      title: '${escapedTitle}',
+      title: \`${safeTitle}\`,
       category: '${project.category}',
-      description: '${escapedDescription}',
+      description: \`${safeDescription}\`,
       imageUrl: ${project.imageUrl ? `'${project.imageUrl}'` : 'null'},
       videoUrl: ${project.videoUrl ? `'${project.videoUrl}'` : 'null'},
       tags: '${project.tags}',
@@ -119,29 +121,29 @@ async function main() {
     }
   });`).join('\n')}
   ` : ''}`;
-        }).join('\n')}
+    }).join('\n')}
   console.log('✅ ${projects.length} projeto(s) criado(s)\\n');
 
   // 4. Serviços
   ${services.length > 0 ? `
   console.log('Criando serviços...');
   ${services.map(service => {
-            const escapedTitle = service.title.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-            const escapedDescription = service.description.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-            return `
+      const safeTitle = service.title ? service.title.replace(/`/g, '\\`') : '';
+      const safeDescription = service.description ? service.description.replace(/`/g, '\\`') : '';
+      return `
   await prisma.service.upsert({
     where: { id: '${service.id}' },
     update: {},
     create: {
       id: '${service.id}',
-      title: '${escapedTitle}',
-      description: '${escapedDescription}',
+      title: \`${safeTitle}\`,
+      description: \`${safeDescription}\`,
       iconName: '${service.iconName}',
       createdAt: new Date('${service.createdAt.toISOString()}'),
       updatedAt: new Date('${service.updatedAt.toISOString()}')
     }
   });`;
-        }).join('\n')}
+    }).join('\n')}
   console.log('✅ ${services.length} serviço(s) criado(s)\\n');
   ` : '// Sem serviços no banco local'}
 
@@ -158,19 +160,19 @@ main()
   });
 `;
 
-        // Salvar o seed gerado
-        const seedPath = path.join(__dirname, 'seed-migrated.js');
-        fs.writeFileSync(seedPath, seedCode);
+    // Salvar o seed gerado
+    const seedPath = path.join(__dirname, 'seed-migrated.js');
+    fs.writeFileSync(seedPath, seedCode);
 
-        console.log('✅ SEED GERADO COM SUCESSO!');
-        console.log(`📁 Arquivo: prisma/seed-migrated.js\n`);
+    console.log('✅ SEED GERADO COM SUCESSO!');
+    console.log(`📁 Arquivo: prisma/seed-migrated.js\\n`);
 
-    } catch (error) {
-        console.error('❌ Erro:', error.message);
-        if (error.code === 'P2025') console.error('  (Registro não encontrado)');
-    } finally {
-        await prisma.$disconnect();
-    }
+  } catch (error) {
+    console.error('❌ Erro:', error.message);
+    if (error.code === 'P2025') console.error('  (Registro não encontrado)');
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 exportData();
