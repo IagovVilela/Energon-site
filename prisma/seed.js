@@ -1,89 +1,90 @@
-const { PrismaClient } = require('@prisma/client')
-require('dotenv').config()
-const bcrypt = require('bcryptjs')
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 
-// Hardcoded data to avoid importing TS file
-const siteConfig = {
-    personal: {
-        name: "Energon Tecnologia",
-        role: "Desenvolvedor Full Stack ",
-        email: "iagovventura@gmail.com",
-        phone: "(12) 99637-3335",
-        location: "São Paulo, SP - Remoto Global",
-        social: {
-            github: "https://github.com/seuusuario",
-            linkedin: "https://www.linkedin.com/in/iago-vilela-2a9584272",
-            instagram: "https://instagram.com/seuusuario"
-        }
-    },
-    hero: {
-        title: { prefix: "Transforme Ideias em", highlight: "Software de Alto Nível" },
-        description: "Sistemas web personalizados, otimizados para performance e conversão."
-    },
-    about: {
-        title: { prefix: "Mais que código,", highlight: "Soluções Estratégicas" },
-        description: [
-            "Minha forma de trabalhar une design moderno e sofisticado com engenharia de software sólida.",
-            "Seja um sistema de gestão personalizado ou site institucional."
-        ]
-    }
-}
-
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
-    console.log('DATABASE_URL detected:', process.env.DATABASE_URL ? 'YES (Starts with ' + process.env.DATABASE_URL.substring(0, 10) + '...)' : 'NO');
-    console.log('Seeding database via JS...')
+    console.log('🌱 Populando banco PostgreSQL...');
 
-    try {
-        // 1. Admin User
-        const email = 'iagovventura@gmail.com';
-        const password = await bcrypt.hash('admin', 10);
+    // 1. Criar usuário admin
+    const password = await bcrypt.hash('admin123', 10);
+    const user = await prisma.user.upsert({
+        where: { email: 'iagovventura@gmail.com' },
+        update: {},
+        create: {
+            email: 'iagovventura@gmail.com',
+            name: 'Iago Vilela',
+            password
+        }
+    });
+    console.log('✅ Usuário admin criado:', user.email);
 
-        const user = await prisma.user.upsert({
-            where: { email },
-            update: { password },
-            create: {
-                email,
-                name: 'Iago Vilela',
-                password
-            }
-        });
-        console.log(`Admin user ready: ${user.email}`);
+    // 2. Configurações do site
+    const config = await prisma.siteConfig.upsert({
+        where: { id: 'config' },
+        update: {},
+        create: {
+            id: 'config',
+            heroTitle: 'Transforme Ideias em Software de Alto Nível',
+            heroHighlight: 'Software de Alto Nível',
+            heroDescription: 'Sistemas web personalizados, otimizados para performance e conversão.',
+            aboutTitle: 'Mais que código, Soluções Estratégicas',
+            aboutDescription: 'Desenvolvimento de sistemas web personalizados com foco em resultados.',
+            email: 'iagovventura@gmail.com',
+            phone: '(12) 99637-3335',
+            location: 'São Paulo, SP - Remoto Global',
+            linkedinUrl: 'https://www.linkedin.com/in/iago-vilela-2a9584272',
+            githubUrl: 'https://github.com/IagovVilela',
+            instagramUrl: null
+        }
+    });
+    console.log('✅ Configurações criadas');
 
-        // 2. Site Config
-        const config = await prisma.siteConfig.upsert({
-            where: { id: 'config' },
+    // 3. Projetos exemplo
+    const projects = [
+        {
+            title: 'Sistema de Gestão Empresarial',
+            category: 'Web App',
+            description: 'Sistema completo de gestão com dashboard interativo, relatórios em tempo real e integração com APIs',
+            tags: 'React,Node.js,PostgreSQL,TypeScript',
+            featured: true
+        },
+        {
+            title: 'E-commerce Premium',
+            category: 'E-commerce',
+            description: 'Plataforma de vendas online com carrinho, pagamentos integrados e painel administrativo',
+            tags: 'Next.js,Stripe,Prisma,TailwindCSS',
+            featured: true
+        },
+        {
+            title: 'Landing Page Conversão',
+            category: 'Website',
+            description: 'Landing page otimizada para SEO e conversão com animações premium',
+            tags: 'Next.js,Framer Motion,Analytics',
+            featured: false
+        }
+    ];
+
+    for (const project of projects) {
+        await prisma.project.upsert({
+            where: { title: project.title },
             update: {},
-            create: {
-                id: 'config',
-                heroTitle: siteConfig.hero.title.prefix + ' ' + siteConfig.hero.title.highlight,
-                heroHighlight: siteConfig.hero.title.highlight,
-                heroDescription: siteConfig.hero.description,
-
-                aboutTitle: siteConfig.about.title.prefix + ' ' + siteConfig.about.title.highlight,
-                aboutDescription: siteConfig.about.description.join('\n\n'),
-
-                email: siteConfig.personal.email,
-                phone: siteConfig.personal.phone,
-                location: siteConfig.personal.location,
-                instagramUrl: siteConfig.personal.social.instagram,
-                linkedinUrl: siteConfig.personal.social.linkedin,
-                githubUrl: siteConfig.personal.social.github,
-            },
-        })
-        console.log(`SiteConfig created: ${config.id}`)
-    } catch (e) {
-        console.error("Error seeding:", e)
+            create: project
+        });
     }
+    console.log(`✅ ${projects.length} projetos criados`);
+
+    console.log('\n🎉 Banco populado com sucesso!');
+    console.log('\n📝 Login admin:');
+    console.log('   Email: iagovventura@gmail.com');
+    console.log('   Senha: admin123');
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect()
+    .catch((e) => {
+        console.error('❌ Erro:', e);
+        process.exit(1);
     })
-    .catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-        process.exit(1)
-    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
