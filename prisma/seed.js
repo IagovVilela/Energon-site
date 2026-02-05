@@ -6,6 +6,15 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Migrando SEUS dados REAIS para PostgreSQL...\n');
 
+  // Helper para imagens - garante que não duplique nem quebre se já existir
+  const upsertImage = async (data) => {
+    await prisma.projectImage.upsert({
+      where: { id: data.id },
+      update: {},
+      create: data
+    });
+  };
+
   // 1. Usuários
   console.log('Criando usuários...');
 
@@ -75,31 +84,25 @@ Seja um sistema de gestão personalizado ou site institucional.`,
 
   // Imagens do projeto
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknfhuyk000gbs5crkcxm17l',
-      url: '/uploads/1768964006394-imagem_2026-01-20_234411821.png',
-      projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
-      createdAt: new Date('2026-01-21T02:53:26.396Z')
-    }
+  await upsertImage({
+    id: 'cmknfhuyk000gbs5crkcxm17l',
+    url: '/uploads/1768964006394-imagem_2026-01-20_234411821.png',
+    projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
+    createdAt: new Date('2026-01-21T02:53:26.396Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknfhuyw000ibs5ch6o7engw',
-      url: '/uploads/1768964006405-imagem_2026-01-20_234436409.png',
-      projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
-      createdAt: new Date('2026-01-21T02:53:26.408Z')
-    }
+  await upsertImage({
+    id: 'cmknfhuyw000ibs5ch6o7engw',
+    url: '/uploads/1768964006405-imagem_2026-01-20_234436409.png',
+    projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
+    createdAt: new Date('2026-01-21T02:53:26.408Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknfhuz4000kbs5cz78a50st',
-      url: '/uploads/1768964006414-imagem_2026-01-20_234457431.png',
-      projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
-      createdAt: new Date('2026-01-21T02:53:26.416Z')
-    }
+  await upsertImage({
+    id: 'cmknfhuz4000kbs5cz78a50st',
+    url: '/uploads/1768964006414-imagem_2026-01-20_234457431.png',
+    projectId: project_cmknfhuyb000ebs5cxrfpd1rm.id,
+    createdAt: new Date('2026-01-21T02:53:26.416Z')
   });
 
 
@@ -139,58 +142,46 @@ Gráficos de evolução`,
 
   // Imagens do projeto
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggs9i0002bswsai8tryhf',
-      url: '/uploads/1768965635859-imagem_2026-01-21_001823996.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.862Z')
-    }
+  await upsertImage({
+    id: 'cmknggs9i0002bswsai8tryhf',
+    url: '/uploads/1768965635859-imagem_2026-01-21_001823996.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.862Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggs9q0004bswsyxik9mnt',
-      url: '/uploads/1768965635869-imagem_2026-01-21_001911452.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.871Z')
-    }
+  await upsertImage({
+    id: 'cmknggs9q0004bswsyxik9mnt',
+    url: '/uploads/1768965635869-imagem_2026-01-21_001911452.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.871Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggs9y0006bswsoyqfwm66',
-      url: '/uploads/1768965635877-imagem_2026-01-21_001929425.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.879Z')
-    }
+  await upsertImage({
+    id: 'cmknggs9y0006bswsoyqfwm66',
+    url: '/uploads/1768965635877-imagem_2026-01-21_001929425.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.879Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggsa50008bswsqepipfd2',
-      url: '/uploads/1768965635884-imagem_2026-01-21_001944661.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.886Z')
-    }
+  await upsertImage({
+    id: 'cmknggsa50008bswsqepipfd2',
+    url: '/uploads/1768965635884-imagem_2026-01-21_001944661.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.886Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggsad000abswstixnbb0i',
-      url: '/uploads/1768965635891-imagem_2026-01-21_002002404.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.893Z')
-    }
+  await upsertImage({
+    id: 'cmknggsad000abswstixnbb0i',
+    url: '/uploads/1768965635891-imagem_2026-01-21_002002404.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.893Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmknggsak000cbswsbgga577a',
-      url: '/uploads/1768965635898-imagem_2026-01-21_002031705.png',
-      projectId: project_cmknggs8g0000bswso09c8an8.id,
-      createdAt: new Date('2026-01-21T03:20:35.900Z')
-    }
+  await upsertImage({
+    id: 'cmknggsak000cbswsbgga577a',
+    url: '/uploads/1768965635898-imagem_2026-01-21_002031705.png',
+    projectId: project_cmknggs8g0000bswso09c8an8.id,
+    createdAt: new Date('2026-01-21T03:20:35.900Z')
   });
 
 
@@ -244,76 +235,60 @@ Desenvolvi uma plataforma completa que oferece:
 
   // Imagens do projeto
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnssw000fbswsur12uuux',
-      url: '/uploads/1768965963151-imagem_2026-01-21_002305186.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.153Z')
-    }
+  await upsertImage({
+    id: 'cmkngnssw000fbswsur12uuux',
+    url: '/uploads/1768965963151-imagem_2026-01-21_002305186.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.153Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnstj000hbsws028saenf',
-      url: '/uploads/1768965963173-imagem_2026-01-21_002328455.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.175Z')
-    }
+  await upsertImage({
+    id: 'cmkngnstj000hbsws028saenf',
+    url: '/uploads/1768965963173-imagem_2026-01-21_002328455.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.175Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnstq000jbswsdyzm8cii',
-      url: '/uploads/1768965963180-imagem_2026-01-21_002409785.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.182Z')
-    }
+  await upsertImage({
+    id: 'cmkngnstq000jbswsdyzm8cii',
+    url: '/uploads/1768965963180-imagem_2026-01-21_002409785.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.182Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnstw000lbswspac454bq',
-      url: '/uploads/1768965963187-imagem_2026-01-21_002429151.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.188Z')
-    }
+  await upsertImage({
+    id: 'cmkngnstw000lbswspac454bq',
+    url: '/uploads/1768965963187-imagem_2026-01-21_002429151.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.188Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnsu2000nbswsi47qvxq4',
-      url: '/uploads/1768965963193-imagem_2026-01-21_002455191.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.195Z')
-    }
+  await upsertImage({
+    id: 'cmkngnsu2000nbswsi47qvxq4',
+    url: '/uploads/1768965963193-imagem_2026-01-21_002455191.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.195Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnsua000pbswsqca5u1y3',
-      url: '/uploads/1768965963200-imagem_2026-01-21_002519293.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.202Z')
-    }
+  await upsertImage({
+    id: 'cmkngnsua000pbswsqca5u1y3',
+    url: '/uploads/1768965963200-imagem_2026-01-21_002519293.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.202Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnsug000rbswssoq7cii3',
-      url: '/uploads/1768965963207-imagem_2026-01-21_002535949.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.209Z')
-    }
+  await upsertImage({
+    id: 'cmkngnsug000rbswssoq7cii3',
+    url: '/uploads/1768965963207-imagem_2026-01-21_002535949.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.209Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngnsun000tbswsxhsf8f5s',
-      url: '/uploads/1768965963214-imagem_2026-01-21_002558649.png',
-      projectId: project_cmkngnssp000dbswswioez64a.id,
-      createdAt: new Date('2026-01-21T03:26:03.216Z')
-    }
+  await upsertImage({
+    id: 'cmkngnsun000tbswsxhsf8f5s',
+    url: '/uploads/1768965963214-imagem_2026-01-21_002558649.png',
+    projectId: project_cmkngnssp000dbswswioez64a.id,
+    createdAt: new Date('2026-01-21T03:26:03.216Z')
   });
 
 
@@ -372,31 +347,25 @@ Desenvolvi uma plataforma completa que oferece:
 
   // Imagens do projeto
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngtwyp000wbswsxtpd4gqy',
-      url: '/uploads/1768966248479-imagem_2026-01-21_003002966.png',
-      projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
-      createdAt: new Date('2026-01-21T03:30:48.481Z')
-    }
+  await upsertImage({
+    id: 'cmkngtwyp000wbswsxtpd4gqy',
+    url: '/uploads/1768966248479-imagem_2026-01-21_003002966.png',
+    projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
+    createdAt: new Date('2026-01-21T03:30:48.481Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngtwyw000ybswsiv0kbleg',
-      url: '/uploads/1768966248486-imagem_2026-01-21_003018110.png',
-      projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
-      createdAt: new Date('2026-01-21T03:30:48.488Z')
-    }
+  await upsertImage({
+    id: 'cmkngtwyw000ybswsiv0kbleg',
+    url: '/uploads/1768966248486-imagem_2026-01-21_003018110.png',
+    projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
+    createdAt: new Date('2026-01-21T03:30:48.488Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngtwz30010bsws0bmvwuom',
-      url: '/uploads/1768966248493-imagem_2026-01-21_003029266.png',
-      projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
-      createdAt: new Date('2026-01-21T03:30:48.495Z')
-    }
+  await upsertImage({
+    id: 'cmkngtwz30010bsws0bmvwuom',
+    url: '/uploads/1768966248493-imagem_2026-01-21_003029266.png',
+    projectId: project_cmkngtwyi000ubswsdd7sqqkc.id,
+    createdAt: new Date('2026-01-21T03:30:48.495Z')
   });
 
 
@@ -420,40 +389,32 @@ Desenvolvi uma plataforma completa que oferece:
 
   // Imagens do projeto
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngzm9e0013bswsgl9al9pv',
-      url: '/uploads/1768966514545-imagem_2026-01-21_003431196.png',
-      projectId: project_cmkngzm970011bswsoscd9e1y.id,
-      createdAt: new Date('2026-01-21T03:35:14.547Z')
-    }
+  await upsertImage({
+    id: 'cmkngzm9e0013bswsgl9al9pv',
+    url: '/uploads/1768966514545-imagem_2026-01-21_003431196.png',
+    projectId: project_cmkngzm970011bswsoscd9e1y.id,
+    createdAt: new Date('2026-01-21T03:35:14.547Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngzm9k0015bswsvf9pf8wq',
-      url: '/uploads/1768966514551-imagem_2026-01-21_003439786.png',
-      projectId: project_cmkngzm970011bswsoscd9e1y.id,
-      createdAt: new Date('2026-01-21T03:35:14.553Z')
-    }
+  await upsertImage({
+    id: 'cmkngzm9k0015bswsvf9pf8wq',
+    url: '/uploads/1768966514551-imagem_2026-01-21_003439786.png',
+    projectId: project_cmkngzm970011bswsoscd9e1y.id,
+    createdAt: new Date('2026-01-21T03:35:14.553Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngzm9r0017bswsk5rg9yby',
-      url: '/uploads/1768966514557-imagem_2026-01-21_003453130.png',
-      projectId: project_cmkngzm970011bswsoscd9e1y.id,
-      createdAt: new Date('2026-01-21T03:35:14.559Z')
-    }
+  await upsertImage({
+    id: 'cmkngzm9r0017bswsk5rg9yby',
+    url: '/uploads/1768966514557-imagem_2026-01-21_003453130.png',
+    projectId: project_cmkngzm970011bswsoscd9e1y.id,
+    createdAt: new Date('2026-01-21T03:35:14.559Z')
   });
 
-  await prisma.projectImage.create({
-    data: {
-      id: 'cmkngzm9z0019bswstttpi4rk',
-      url: '/uploads/1768966514564-imagem_2026-01-21_003510536.png',
-      projectId: project_cmkngzm970011bswsoscd9e1y.id,
-      createdAt: new Date('2026-01-21T03:35:14.567Z')
-    }
+  await upsertImage({
+    id: 'cmkngzm9z0019bswstttpi4rk',
+    url: '/uploads/1768966514564-imagem_2026-01-21_003510536.png',
+    projectId: project_cmkngzm970011bswsoscd9e1y.id,
+    createdAt: new Date('2026-01-21T03:35:14.567Z')
   });
 
   console.log('✅ 5 projeto(s) criado(s)\n');
