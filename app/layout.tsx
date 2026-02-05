@@ -10,12 +10,6 @@ export const metadata: Metadata = {
   title: "Sistemas Web Personalizados | Desenvolvimento Sob Medida",
   description: "Desenvolvimento de sistemas web personalizados sob medida para empresas e pessoas. Soluções modernas, escaláveis e de alta performance.",
   keywords: ["sistemas web", "desenvolvimento web", "sistemas personalizados", "aplicações web"],
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   openGraph: {
     title: "Sistemas Web Personalizados | Desenvolvimento Sob Medida",
     description: "Desenvolvimento de sistemas web personalizados sob medida para empresas e pessoas.",
@@ -25,6 +19,13 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
