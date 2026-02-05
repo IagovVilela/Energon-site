@@ -45,5 +45,5 @@ dev.db
 dev.db-journal
 
 # Uploads (development only - production should use cloud storage)
-/public/uploads/*
+# /public/uploads/*
 !/public/uploads/.gitkeep
