@@ -2,10 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { existsSync } from "fs";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 async function saveFile(file: File | null, folder: string): Promise<string | null> {
     // Check if file is actually a valid uploaded file
@@ -17,21 +14,12 @@ async function saveFile(file: File | null, folder: string): Promise<string | nul
     console.log(`Salvando arquivo: ${file.name} (${file.size} bytes)`);
 
     try {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        const uploadDir = join(process.cwd(), "public", "uploads");
-        if (!existsSync(uploadDir)) {
-            console.log("Criando diretório de upload...");
-            await mkdir(uploadDir, { recursive: true });
+        const url = await uploadToCloudinary(file, folder);
+        if (url) {
+            console.log(`Arquivo salvo com sucesso no Cloudinary: ${url}`);
+            return url;
         }
-
-        const fileName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-        const filePath = join(uploadDir, fileName);
-        await writeFile(filePath, buffer);
-
-        console.log(`Arquivo salvo com sucesso em: ${filePath}`);
-        return `/uploads/${fileName}`;
+        return null;
     } catch (error) {
         console.error(`Erro ao salvar arquivo ${file.name}:`, error);
         return null;
