@@ -37,7 +37,7 @@ export function AboutSection({ config }: { config?: any }) {
     const results = [
         { icon: Users, value: "100", label: t('about.results.clients'), color: "text-green-500", suffix: "%" },
         { icon: TrendingUp, value: "+50", label: t('about.results.projects'), color: "text-blue-500" },
-        { icon: Shield, value: "100", label: "Garantia de Qualidade", color: "text-purple-500", suffix: "%" },
+        { icon: Shield, value: "100%", label: "Garantia de Qualidade", color: "text-purple-500", suffix: "%" },
     ];
 
     const whatYouGet = [
