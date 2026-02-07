@@ -1,21 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-// import { Layers, Monitor, Cpu, BarChart3, Globe, Zap } from "lucide-react"; // Removed static icons
+import { Layers, Monitor, Cpu, BarChart3, Globe, Zap } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import LordIcon from "@/app/components/ui/LordIcon";
-import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 
 export function ServicesSection() {
     const { t } = useLanguage();
 
     const services = [
-        { icon: LORDICON_ICONS.LAYERS, title: t('services.item1.title'), description: t('services.item1.desc') },
-        { icon: LORDICON_ICONS.MONITOR, title: t('services.item2.title'), description: t('services.item2.desc') },
-        { icon: LORDICON_ICONS.ZAP, title: t('services.item3.title'), description: t('services.item3.desc') },
-        { icon: LORDICON_ICONS.TRENDING_UP, title: t('services.item4.title'), description: t('services.item4.desc') }, // BarChart3 -> TRENDING_UP
-        { icon: LORDICON_ICONS.GLOBE, title: t('services.item5.title'), description: t('services.item5.desc') },
-        { icon: LORDICON_ICONS.CPU, title: t('services.item6.title'), description: t('services.item6.desc') },
+        { icon: Layers, title: t('services.item1.title'), description: t('services.item1.desc') },
+        { icon: Monitor, title: t('services.item2.title'), description: t('services.item2.desc') },
+        { icon: Zap, title: t('services.item3.title'), description: t('services.item3.desc') },
+        { icon: BarChart3, title: t('services.item4.title'), description: t('services.item4.desc') },
+        { icon: Globe, title: t('services.item5.title'), description: t('services.item5.desc') },
+        { icon: Cpu, title: t('services.item6.title'), description: t('services.item6.desc') },
     ];
 
     return (
@@ -43,12 +41,7 @@ export function ServicesSection() {
                             className="bg-card/50 backdrop-blur-sm p-8 rounded-2xl border border-border group transition-all duration-300 cursor-default"
                         >
                             <div className="mb-6 p-4 bg-primary/10 w-fit rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                                <LordIcon
-                                    src={service.icon}
-                                    trigger="hover"
-                                    size={32}
-                                    colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
-                                />
+                                <service.icon className="w-8 h-8" />
                             </div>
                             <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
                             <p className="text-muted-foreground leading-relaxed">

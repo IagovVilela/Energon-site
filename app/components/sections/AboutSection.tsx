@@ -1,14 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-// import { CheckCircle2, Clock, DollarSign, Rocket, Shield, TrendingUp, Users, Zap } from "lucide-react"; // Removed static icons
+import { CheckCircle2, Clock, DollarSign, Rocket, Shield, TrendingUp, Users, Zap } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { TiltCard } from "@/app/components/ui/TiltCard";
 import { AnimatedCounter } from "@/app/components/ui/AnimatedCounter";
 import { useScrollReveal } from "@/lib/hooks/useScrollReveal";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import LordIcon from "@/app/components/ui/LordIcon";
-import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 
 export function AboutSection({ config }: { config?: any }) {
     const { t } = useLanguage();
@@ -17,19 +15,19 @@ export function AboutSection({ config }: { config?: any }) {
 
     const benefits = [
         {
-            icon: LORDICON_ICONS.ROCKET,
+            icon: Rocket,
             title: t('about.benefit1.title'),
             description: t('about.benefit1.description'),
             highlight: t('about.benefit1.highlight')
         },
         {
-            icon: LORDICON_ICONS.DOLLAR,
+            icon: DollarSign,
             title: t('about.benefit2.title'),
             description: t('about.benefit2.description'),
             highlight: t('about.benefit2.highlight')
         },
         {
-            icon: LORDICON_ICONS.SHIELD,
+            icon: Shield,
             title: t('about.benefit3.title'),
             description: t('about.benefit3.description'),
             highlight: t('about.benefit3.highlight')
@@ -37,18 +35,18 @@ export function AboutSection({ config }: { config?: any }) {
     ];
 
     const results = [
-        { icon: LORDICON_ICONS.USERS, value: "100", label: t('about.results.clients'), color: "#22c55e", suffix: "%" }, // green-500
-        { icon: LORDICON_ICONS.TRENDING_UP, value: "+50", label: t('about.results.projects'), color: "#3b82f6" }, // blue-500
-        { icon: LORDICON_ICONS.SHIELD, value: "100%", label: "Garantia de Qualidade", color: "#a855f7", suffix: "%" }, // purple-500
+        { icon: Users, value: "100", label: t('about.results.clients'), color: "text-green-500", suffix: "%" },
+        { icon: TrendingUp, value: "+50", label: t('about.results.projects'), color: "text-blue-500" },
+        { icon: Shield, value: "100%", label: "Garantia de Qualidade", color: "text-purple-500", suffix: "%" },
     ];
 
     const whatYouGet = [
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item1') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item2') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item3') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item4') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item5') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item6') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item1') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item2') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item3') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item4') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item5') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item6') },
     ];
 
     return (
@@ -116,12 +114,7 @@ export function AboutSection({ config }: { config?: any }) {
                                         className="mb-4 p-3 rounded-xl bg-primary/10 w-fit group-hover:bg-primary group-hover:text-white transition-all"
                                         whileHover={{ scale: 1.1, rotate: 5 }}
                                     >
-                                        <LordIcon
-                                            src={benefit.icon}
-                                            trigger="hover"
-                                            size={24}
-                                            colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
-                                        />
+                                        <benefit.icon className="w-6 h-6" />
                                     </motion.div>
                                     <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
                                     <p className="text-muted-foreground mb-4">{benefit.description}</p>
@@ -133,12 +126,7 @@ export function AboutSection({ config }: { config?: any }) {
                                             animate={{ scale: [1, 1.2, 1] }}
                                             transition={{ duration: 1.5, repeat: Infinity }}
                                         >
-                                            <LordIcon
-                                                src={LORDICON_ICONS.ZAP}
-                                                trigger="loop"
-                                                size={16}
-                                                colors={{ primary: "#22c55e", secondary: "#22c55e" }}
-                                            />
+                                            <Zap className="w-4 h-4 text-green-500" />
                                         </motion.div>
                                         <span className="text-sm font-semibold text-green-500">{benefit.highlight}</span>
                                     </motion.div>
@@ -173,13 +161,7 @@ export function AboutSection({ config }: { config?: any }) {
                                     delay: index * 0.2
                                 }}
                             >
-                                <LordIcon
-                                    src={result.icon}
-                                    trigger="loop-on-hover"
-                                    size={32}
-                                    colors={{ primary: result.color, secondary: result.color }}
-                                    className="mx-auto mb-2"
-                                />
+                                <result.icon className={`mx-auto mb-2 w-8 h-8 ${result.color}`} />
                             </motion.div>
                             <div className="text-3xl md:text-4xl font-bold mb-1">
                                 {statsInView ? <AnimatedCounter value={result.value} duration={1.5} /> : result.value}
@@ -221,13 +203,7 @@ export function AboutSection({ config }: { config?: any }) {
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.05 + 0.2, type: "spring" }}
                                 >
-                                    <LordIcon
-                                        src={item.icon}
-                                        trigger="hover"
-                                        size={20}
-                                        colors={{ primary: "#22c55e", secondary: "#22c55e" }}
-                                        className="flex-shrink-0 mt-0.5"
-                                    />
+                                    <item.icon className="flex-shrink-0 mt-0.5 w-5 h-5 text-green-500" />
                                 </motion.div>
                                 <span className="text-sm md:text-base">{item.text}</span>
                             </motion.div>
@@ -263,12 +239,7 @@ export function AboutSection({ config }: { config?: any }) {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <LordIcon
-                                src={LORDICON_ICONS.ROCKET}
-                                trigger="loop-on-hover"
-                                size={20}
-                                colors={{ primary: "#ffffff", secondary: "#ffffff" }}
-                            />
+                            <Rocket className="w-5 h-5" />
                             {t('about.cta.button')}
                         </motion.a>
                     </motion.div>
