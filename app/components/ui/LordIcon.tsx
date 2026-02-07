@@ -6,8 +6,10 @@ import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 
 // Register the custom element with the lottie-web instance
-// @ts-ignore - The installed version types expect 0 arguments but runtime requires lottie instance
-defineElement(lottie.loadAnimation);
+if (typeof window !== "undefined") {
+    // @ts-ignore - The installed version types expect 0 arguments but runtime requires lottie instance
+    defineElement(lottie.loadAnimation);
+}
 
 export type LordIconTrigger =
     | "hover"
