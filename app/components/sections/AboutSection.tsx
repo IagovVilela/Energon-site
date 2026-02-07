@@ -43,12 +43,12 @@ export function AboutSection({ config }: { config?: any }) {
     ];
 
     const whatYouGet = [
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item1') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item2') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item3') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item4') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item5') },
-        { icon: LORDICON_ICONS.CHECK, text: t('about.whatYouGet.item6') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item1') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item2') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item3') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item4') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item5') },
+        { icon: CheckCircle2, text: t('about.whatYouGet.item6') },
     ];
 
     return (
@@ -211,13 +211,7 @@ export function AboutSection({ config }: { config?: any }) {
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.05 + 0.2, type: "spring" }}
                                 >
-                                    <LordIcon
-                                        src={item.icon as string}
-                                        trigger="hover"
-                                        size={20}
-                                        colors={{ primary: "#22c55e", secondary: "#22c55e" }}
-                                        className="flex-shrink-0 mt-0.5"
-                                    />
+                                    <item.icon className="flex-shrink-0 mt-0.5 w-5 h-5 text-green-500" />
                                 </motion.div>
                                 <span className="text-sm md:text-base">{item.text}</span>
                             </motion.div>
