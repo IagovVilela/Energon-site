@@ -1,11 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Send, CheckCircle2, Zap } from "lucide-react";
+// import { ArrowRight, Send, CheckCircle2, Zap } from "lucide-react"; // Removed static icons
 import { useState, useTransition } from "react";
 import { siteConfig } from "@/app/config/site";
 import { sendContactEmail } from "@/app/actions/contact";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import LordIcon from "@/app/components/ui/LordIcon";
+import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 
 export function ContactSection({ config }: { config?: any }) {
     const { t } = useLanguage();
@@ -66,7 +68,12 @@ export function ContactSection({ config }: { config?: any }) {
                                 className="p-8 rounded-[2rem] bg-card border border-border/50 group hover:border-primary/50 transition-all duration-500"
                             >
                                 <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
-                                    <Send className="w-6 h-6" />
+                                    <LordIcon
+                                        src={LORDICON_ICONS.SEND}
+                                        trigger="hover"
+                                        size={24}
+                                        colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
+                                    />
                                 </div>
                                 <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('contact.email')}</h4>
                                 <p className="font-bold text-lg break-all">{siteConfig.personal.email}</p>
@@ -93,14 +100,24 @@ export function ContactSection({ config }: { config?: any }) {
                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 text-green-500 font-bold text-sm hover:bg-green-500 hover:text-white transition-all group-hover:shadow-lg shadow-green-500/20"
                                 >
                                     Conversar agora
-                                    <ArrowRight className="w-4 h-4" />
+                                    <LordIcon
+                                        src={LORDICON_ICONS.ARROW_RIGHT}
+                                        trigger="loop-on-hover"
+                                        size={20}
+                                        colors={{ primary: "#22c55e", secondary: "#22c55e" }}
+                                    />
                                 </a>
                             </motion.div>
                         </div>
 
                         <div className="p-8 rounded-[2rem] bg-gradient-to-br from-primary/5 to-blue-500/5 border border-primary/10">
                             <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-4">
-                                <CheckCircle2 className="w-4 h-4" />
+                                <LordIcon
+                                    src={LORDICON_ICONS.CHECK}
+                                    trigger="loop"
+                                    size={16}
+                                    colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
+                                />
                                 Fast Response
                             </h4>
                             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -199,7 +216,12 @@ export function ContactSection({ config }: { config?: any }) {
                                             initial={{ x: 0 }}
                                             whileHover={{ x: 5 }}
                                         >
-                                            <ArrowRight className="w-5 h-5" />
+                                            <LordIcon
+                                                src={LORDICON_ICONS.ARROW_RIGHT}
+                                                trigger="loop-on-hover"
+                                                size={20}
+                                                colors={{ primary: "#ffffff", secondary: "#ffffff" }}
+                                            />
                                         </motion.div>
                                     </>
                                 )}
@@ -219,7 +241,12 @@ export function ContactSection({ config }: { config?: any }) {
                                             animate={{ scale: 1 }}
                                             transition={{ delay: 0.2, type: "spring" }}
                                         >
-                                            <CheckCircle2 className="w-5 h-5" />
+                                            <LordIcon
+                                                src={LORDICON_ICONS.CHECK}
+                                                trigger="loop"
+                                                size={20}
+                                                colors={{ primary: "#22c55e", secondary: "#22c55e" }}
+                                            />
                                         </motion.div>
                                         {t('contact.form.success')}
                                     </motion.div>

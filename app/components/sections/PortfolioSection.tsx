@@ -2,21 +2,14 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    ArrowRight,
-    ExternalLink,
-    Code,
     ChevronLeft,
     ChevronRight,
-    X,
-    Layers,
-    Zap,
-    Layout,
-    CheckCircle2,
-    Globe
 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import LordIcon from "@/app/components/ui/LordIcon";
+import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 
 interface Project {
     id: string;
@@ -167,7 +160,12 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                                         className="group/btn inline-flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors"
                                     >
                                         {t('portfolio.viewDetails')}
-                                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
+                                        <LordIcon
+                                            src={LORDICON_ICONS.ARROW_RIGHT}
+                                            trigger="hover"
+                                            size={20}
+                                            colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
+                                        />
                                     </button>
                                 </div>
                             </motion.div>
@@ -201,7 +199,12 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                                 onClick={() => setSelectedProject(null)}
                                 className="absolute top-6 right-6 z-[2010] p-3 bg-black/50 hover:bg-primary text-white rounded-full transition-all border border-white/10 backdrop-blur-md hover:rotate-90"
                             >
-                                <X className="w-6 h-6" />
+                                <LordIcon
+                                    src={LORDICON_ICONS.CROSS}
+                                    trigger="hover"
+                                    size={24}
+                                    colors={{ primary: "#ffffff", secondary: "#ffffff" }}
+                                />
                             </button>
 
                             {/* Left Side: Media (Independent Scroll or Fixed) */}
@@ -255,7 +258,12 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                                 <div className="p-8 md:p-12">
                                     {/* Header Info */}
                                     <div className="flex items-center gap-2 mb-4 text-xs font-bold text-primary uppercase tracking-[0.2em]">
-                                        <Globe className="w-4 h-4" />
+                                        <LordIcon
+                                            src={LORDICON_ICONS.PROJECTS}
+                                            trigger="loop"
+                                            size={20}
+                                            colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
+                                        />
                                         Project Showcase
                                     </div>
                                     <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight leading-tight">
@@ -273,14 +281,25 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                                             rel="noopener noreferrer"
                                             className="w-full flex items-center justify-center gap-2 px-8 py-5 bg-primary text-white rounded-2xl font-bold hover:scale-[1.02] transition-all shadow-xl shadow-primary/20 active:scale-95 mb-12"
                                         >
-                                            View Live Demo <ExternalLink className="w-5 h-5" />
+                                            View Live Demo
+                                            <LordIcon
+                                                src={LORDICON_ICONS.LINK}
+                                                trigger="hover"
+                                                size={24}
+                                                colors={{ primary: "#ffffff", secondary: "#ffffff" }}
+                                            />
                                         </a>
                                     )}
 
                                     {/* Tech Stack */}
                                     <div className="mb-12">
                                         <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mb-6 py-2 border-b border-white/5 text-muted-foreground/50">
-                                            <Layout className="w-4 h-4" />
+                                            <LordIcon
+                                                src={LORDICON_ICONS.LAYERS}
+                                                trigger="hover"
+                                                size={20}
+                                                colors={{ primary: "#9ca3af", secondary: "#9ca3af" }}
+                                            />
                                             Technology Stack
                                         </h4>
                                         <div className="flex flex-wrap gap-2">
@@ -295,12 +314,24 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                                     {/* Project Details */}
                                     <div>
                                         <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mb-6 py-2 border-b border-white/5 text-muted-foreground/50">
-                                            <Code className="w-4 h-4" />
+                                            <LordIcon
+                                                src={LORDICON_ICONS.CODE}
+                                                trigger="hover"
+                                                size={20}
+                                                colors={{ primary: "#9ca3af", secondary: "#9ca3af" }}
+                                            />
                                             {t('portfolio.madeWith')}
                                         </h4>
                                         <div className="space-y-4">
                                             <div className="flex items-start gap-3 p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                                                <CheckCircle2 className="w-4 h-4 mt-0.5 text-primary" />
+                                                <div className="mt-0.5">
+                                                    <LordIcon
+                                                        src={LORDICON_ICONS.CHECK}
+                                                        trigger="loop"
+                                                        size={20}
+                                                        colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
+                                                    />
+                                                </div>
                                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                                     Developed with a focus on high performance, clean architecture, and responsive design systems.
                                                 </p>

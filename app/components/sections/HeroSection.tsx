@@ -1,11 +1,13 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+// import { ArrowRight, Sparkles } from "lucide-react"; // Removed static icons
 import Link from "next/link";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { MagneticButton } from "@/app/components/ui/MagneticButton";
 import { useEffect } from "react";
+import LordIcon from "@/app/components/ui/LordIcon";
+import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 
 export function HeroSection({ config }: { config?: any }) {
     const { t } = useLanguage();
@@ -114,7 +116,12 @@ export function HeroSection({ config }: { config?: any }) {
                             animate={{ rotate: [0, 10, -10, 0] }}
                             transition={{ duration: 2, repeat: Infinity }}
                         >
-                            <Sparkles className="w-4 h-4" />
+                            <LordIcon
+                                src={LORDICON_ICONS.SPARKLES}
+                                trigger="loop"
+                                size={20}
+                                colors={{ primary: "#eab308", secondary: "#eab308" }} // Yellow/Gold
+                            />
                         </motion.div>
                         <span className="text-xs font-bold uppercase tracking-widest">{t('hero.badge')}</span>
                     </motion.div>
@@ -195,7 +202,12 @@ export function HeroSection({ config }: { config?: any }) {
                     >
                         <span className="relative z-10 flex items-center gap-2">
                             {t('hero.cta')}
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+                            <LordIcon
+                                src={LORDICON_ICONS.ARROW_RIGHT}
+                                trigger="loop-on-hover"
+                                size={24}
+                                colors={{ primary: "#ffffff", secondary: "#ffffff" }}
+                            />
                         </span>
 
                         {/* Animated shimmer effect */}
