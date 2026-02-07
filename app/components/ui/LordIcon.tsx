@@ -6,10 +6,7 @@ import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 
 // Register the custom element with the lottie-web instance
-if (typeof window !== "undefined") {
-    // @ts-ignore - The installed version types expect 0 arguments but runtime requires lottie instance
-    defineElement(lottie.loadAnimation);
-}
+
 
 export type LordIconTrigger =
     | "hover"
@@ -40,6 +37,19 @@ const LordIcon = ({
     className,
 }: LordIconProps) => {
     const iconRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        // Inicializa o elemento customizado do Lordicon
+        // Precisamos garantir que isso rode no cliente com a instância do lottie
+        if (typeof window !== "undefined") {
+            try {
+                // @ts-ignore
+                defineElement(lottie.loadAnimation);
+            } catch (error) {
+                console.error("Erro ao inicializar Lordicon:", error);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (iconRef.current) {
