@@ -5,12 +5,13 @@ import { useLanguage } from '@/app/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import LordIcon from './ui/LordIcon';
 import { LORDICON_ICONS } from '@/lib/lordicon-icons';
+import { ThemeToggle } from './ThemeToggle';
 
 export function LanguageSwitcher() {
     const { language, setLanguage } = useLanguage();
 
     return (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-card/80 backdrop-blur-md border border-white/10 rounded-full px-3 py-2 shadow-lg">
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-white/80 dark:bg-card/80 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-full px-3 py-2 shadow-lg">
             <LordIcon
                 src={LORDICON_ICONS.GLOBE}
                 trigger="hover"
@@ -21,7 +22,7 @@ export function LanguageSwitcher() {
                 onClick={() => setLanguage('pt')}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${language === 'pt'
                     ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:text-white'
+                    : 'text-slate-600 dark:text-muted-foreground hover:text-black dark:hover:text-white'
                     }`}
             >
                 PT
@@ -30,11 +31,13 @@ export function LanguageSwitcher() {
                 onClick={() => setLanguage('en')}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${language === 'en'
                     ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:text-white'
+                    : 'text-slate-600 dark:text-muted-foreground hover:text-black dark:hover:text-white'
                     }`}
             >
                 EN
             </button>
+            <div className="w-px h-5 bg-black/10 dark:bg-white/10 mx-1" />
+            <ThemeToggle />
         </div>
     );
 }

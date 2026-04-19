@@ -126,6 +126,8 @@ const translations = {
         'contact.form.sending': 'Enviando...',
         'contact.form.success': 'Mensagem enviada com sucesso! Responderei em breve.',
         'contact.form.error': 'Erro ao enviar mensagem',
+        'contact.fastResponse.title': 'Resposta Rápida',
+        'contact.fastResponse.desc': 'Normalmente respondo a todas as consultas em até 24 horas. Seu projeto é importante para mim, e estou ansioso para discutir como podemos trabalhar juntos.',
     },
     en: {
         // Hero Section
@@ -240,6 +242,8 @@ const translations = {
         'contact.form.sending': 'Sending...',
         'contact.form.success': 'Message sent successfully! I will reply soon.',
         'contact.form.error': 'Error sending message',
+        'contact.fastResponse.title': 'Fast Response',
+        'contact.fastResponse.desc': 'I typically respond to all inquiries within 24 hours. Your project is important to me, and I look forward to discussing how we can work together.',
     },
 };
 

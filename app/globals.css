@@ -4,6 +4,29 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 263.4 70% 50.4%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -71,7 +94,7 @@ html {
 
 /* Glass effect */
 .glass-card {
-  @apply bg-white/5 backdrop-blur-md border border-white/10;
+  @apply bg-white/40 dark:bg-white/5 backdrop-blur-md border border-black/10 dark:border-white/10;
 }
 
 /* Glow effect on hover */
@@ -250,4 +273,32 @@ html {
 
 .ripple:active::before {
   animation: ripple 0.6s ease-out;
+}
+
+/* ─── Cinematic Transition Performance ─────────────────────────── */
+
+/* GPU-accelerated sections for smoother transforms */
+section {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Prevent layout shifts during animations */
+[data-cinematic] {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* Override for motion elements — let framer handle these */
+[style*="transform"],
+[style*="opacity"] {
+  transition-property: none;
 }
