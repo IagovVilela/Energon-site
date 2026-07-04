@@ -55,21 +55,18 @@ export function TextReveal({
 interface WordRevealProps {
     text: string;
     className?: string;
-    /** Delay before the first word starts */
     delay?: number;
-    /** Delay between each word */
     wordDelay?: number;
+    /** Animate on mount instead of waiting for scroll into view (use in hero) */
+    immediate?: boolean;
 }
 
-/**
- * Word-by-word staggered reveal.
- * Each word enters individually, creating a reading-pace animation.
- */
 export function WordReveal({
     text,
     className = "",
     delay = 0,
     wordDelay = 0.04,
+    immediate = false,
 }: WordRevealProps) {
     const words = text.split(" ");
 
@@ -103,8 +100,9 @@ export function WordReveal({
     return (
         <motion.span
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-30px" }}
+            {...(immediate
+                ? { animate: "visible" }
+                : { whileInView: "visible", viewport: { once: true, margin: "-30px" } })}
             variants={containerVariants}
             className={className}
         >

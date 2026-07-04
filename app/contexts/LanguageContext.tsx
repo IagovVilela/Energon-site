@@ -23,6 +23,11 @@ const translations = {
         'hero.cta': 'Solicitar Orçamento',
         'hero.viewProjects': 'Ver Projetos',
         'hero.scroll': 'Scroll',
+        'hero.visual.label': 'Sistema em produção',
+        'hero.visual.metric1': 'Uptime',
+        'hero.visual.metric2': 'Carregamento',
+        'hero.visual.metric3': 'Suporte',
+        'hero.visual.chart': 'Performance em tempo real',
 
         // Navigation
         'nav.about': 'Sobre',
@@ -163,6 +168,11 @@ const translations = {
         'hero.cta': 'Request Quote',
         'hero.viewProjects': 'View Projects',
         'hero.scroll': 'Scroll',
+        'hero.visual.label': 'Live system',
+        'hero.visual.metric1': 'Uptime',
+        'hero.visual.metric2': 'Load time',
+        'hero.visual.metric3': 'Support',
+        'hero.visual.chart': 'Real-time performance',
 
         // Navigation
         'nav.about': 'About',
