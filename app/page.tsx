@@ -43,7 +43,7 @@ export default async function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/30 selection:text-primary-foreground">
       <CinematicPage>
         <SiteNav />
-        <HeroSection config={config} />
+        <HeroSection config={config} projects={projects} />
         <AboutSection config={config} />
         <ServicesSection />
         <PortfolioSection initialProjects={projects} />

@@ -8,13 +8,20 @@ import { useLanguage } from "@/app/contexts/LanguageContext";
 import { WordReveal } from "@/app/components/animations/TextReveal";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { Marquee } from "@/components/magicui/marquee";
-import { HeroVisual } from "./HeroVisual";
+import { HeroProductMockup } from "./HeroProductMockup";
+import { HeroTrustBar } from "./HeroTrustBar";
+import type { HeroProject } from "@/lib/hero-projects";
 
 interface HeroConfig {
   heroDescription?: string;
 }
 
-export function HeroSection({ config }: { config?: HeroConfig | null }) {
+interface HeroSectionProps {
+  config?: HeroConfig | null;
+  projects?: HeroProject[];
+}
+
+export function HeroSection({ config, projects = [] }: HeroSectionProps) {
   const { t } = useLanguage();
   const [showScroll, setShowScroll] = useState(true);
 
@@ -39,10 +46,7 @@ export function HeroSection({ config }: { config?: HeroConfig | null }) {
         <div className="mb-10 overflow-hidden border-y border-border/50 py-3">
           <Marquee pauseOnHover className="[--duration:25s]">
             {techItems.map((item) => (
-              <span
-                key={item}
-                className="mx-6 editorial-label text-primary/70 whitespace-nowrap"
-              >
+              <span key={item} className="mx-6 editorial-label text-primary/70 whitespace-nowrap">
                 {item}
               </span>
             ))}
@@ -97,8 +101,10 @@ export function HeroSection({ config }: { config?: HeroConfig | null }) {
             </motion.div>
           </div>
 
-          <HeroVisual />
+          <HeroProductMockup projects={projects} />
         </div>
+
+        <HeroTrustBar />
       </div>
 
       {showScroll && (
