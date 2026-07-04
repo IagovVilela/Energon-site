@@ -1,242 +1,124 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-// import { ArrowRight, Sparkles } from "lucide-react"; // Removed static icons
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import { MagneticButton } from "@/app/components/ui/MagneticButton";
-import { useEffect } from "react";
-import LordIcon from "@/app/components/ui/LordIcon";
-import { LORDICON_ICONS } from "@/lib/lordicon-icons";
+import { WordReveal } from "@/app/components/animations/TextReveal";
+import { BorderBeam } from "@/components/magicui/border-beam";
 
-export function HeroSection({ config }: { config?: any }) {
-    const { t } = useLanguage();
+interface HeroConfig {
+  heroTitle?: string;
+  heroHighlight?: string;
+  heroDescription?: string;
+}
 
-    // Seamless loop background animation
-    const backgroundY = useMotionValue(0);
-    const backgroundOpacity = useMotionValue(0.3);
+export function HeroSection({ config }: { config?: HeroConfig | null }) {
+  const { t } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [showScroll, setShowScroll] = useState(true);
 
-    useEffect(() => {
-        const yAnimation = animate(backgroundY, [0, -100, 0], {
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-        });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
 
-        const opacityAnimation = animate(backgroundOpacity, [0.3, 0.5, 0.3], {
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-        });
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 120]);
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-        return () => {
-            yAnimation.stop();
-            opacityAnimation.stop();
-        };
-    }, [backgroundY, backgroundOpacity]);
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 80) setShowScroll(false);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    return (
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-12 overflow-hidden">
+  const titleLine1 = config?.heroTitle?.split(config?.heroHighlight || "")[0]?.trim() || t("hero.title.part1");
+  const highlight = config?.heroHighlight || t("hero.title.part2");
+  const titleLine3 = config?.heroTitle?.includes(highlight)
+    ? config.heroTitle.split(highlight)[1]?.trim() || t("hero.title.part3")
+    : t("hero.title.part3");
 
-            {/* Seamless loop background grid */}
-            <motion.div
-                className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] pointer-events-none"
-                style={{
-                    y: backgroundY,
-                    opacity: backgroundOpacity
-                }}
-            />
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex flex-col justify-end pb-16 md:pb-24 grain-overlay overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-background" />
+      <motion.div
+        className="absolute left-0 top-1/3 h-px w-full bg-border origin-left"
+        style={{ scaleX: lineScale }}
+      />
+      <motion.div
+        className="absolute right-8 md:right-16 top-1/3 bottom-32 w-px bg-border/50 origin-top hidden md:block"
+        style={{ scaleY: lineScale }}
+      />
 
-            {/* Animated gradient blobs - seamless loop */}
-            <motion.div
-                animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.2, 0.4, 0.2],
-                    x: [0, 50, 0],
-                    y: [0, -30, 0]
-                }}
-                transition={{
-                    duration: 15,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    times: [0, 0.5, 1]
-                }}
-                className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none"
-            />
+      <motion.div style={{ opacity, y }} className="container relative z-10 px-4 md:px-6 pt-32">
+        <p className="editorial-label mb-8">{t("hero.badge")}</p>
 
-            <motion.div
-                animate={{
-                    scale: [1.2, 1, 1.2],
-                    opacity: [0.15, 0.3, 0.15],
-                    x: [0, -30, 0],
-                    y: [0, 40, 0]
-                }}
-                transition={{
-                    duration: 18,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    times: [0, 0.5, 1],
-                    delay: 2
-                }}
-                className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/15 blur-[120px] rounded-full pointer-events-none"
-            />
+        <h1 className="headline-xl max-w-5xl mb-8">
+          <WordReveal text={titleLine1} className="block" delay={0.1} />
+          <span className="block text-primary mt-1">
+            <WordReveal text={highlight} delay={0.35} wordDelay={0.06} />
+          </span>
+          {titleLine3 && (
+            <span className="block mt-1">
+              <WordReveal text={titleLine3} delay={0.55} />
+            </span>
+          )}
+        </h1>
 
-            <div className="container relative z-10 px-4 md:px-6 flex flex-col items-center text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-xl text-lg text-muted-foreground mb-12 leading-relaxed"
+        >
+          {config?.heroDescription || t("hero.subtitle")}
+        </motion.p>
 
-                {/* Animated Badge with pulse */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                        scale: 1
-                    }}
-                    transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="relative mb-8"
-                >
-                    {/* Pulsing glow behind badge */}
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.1, 1],
-                            opacity: [0.5, 0.8, 0.5]
-                        }}
-                        transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                        className="absolute inset-0 bg-primary/30 blur-xl rounded-full"
-                    />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <Link
+            href="#contato"
+            className="group relative inline-flex h-14 items-center justify-center px-8 bg-primary text-primary-foreground font-semibold overflow-hidden"
+          >
+            <BorderBeam size={120} duration={8} />
+            <span className="relative z-10 flex items-center gap-2">
+              {t("hero.cta")}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+          <Link
+            href="#portfolio"
+            className="inline-flex h-14 items-center justify-center px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors"
+          >
+            {t("hero.viewProjects")}
+          </Link>
+        </motion.div>
+      </motion.div>
 
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="relative inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary backdrop-blur-md"
-                    >
-                        <motion.div
-                            animate={{ rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        >
-                            <LordIcon
-                                src={LORDICON_ICONS.SPARKLES}
-                                trigger="loop"
-                                size={20}
-                                colors={{ primary: "#eab308", secondary: "#eab308" }} // Yellow/Gold
-                            />
-                        </motion.div>
-                        <span className="text-xs font-bold uppercase tracking-widest">{t('hero.badge')}</span>
-                    </motion.div>
-                </motion.div>
-
-                {/* Animated Title with gradient */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight leading-[1.1]"
-                >
-                    {t('hero.title.part1')} <br />
-                    <motion.span
-                        className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-500 to-cyan-500"
-                        animate={{
-                            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                        }}
-                        transition={{
-                            duration: 5,
-                            repeat: Infinity,
-                            ease: "linear"
-                        }}
-                        style={{
-                            backgroundSize: "200% 200%"
-                        }}
-                    >
-                        {t('hero.title.part2')}
-                    </motion.span>{" "}
-                    {t('hero.title.part3')}
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="max-w-[700px] text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed"
-                >
-                    {t('hero.subtitle')}
-                </motion.p>
-
-                {/* Floating Code Symbol with 3D rotation on hover */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{
-                        opacity: [0.4, 0.8, 0.4],
-                        y: [0, -10, 0],
-                        scale: 1
-                    }}
-                    transition={{
-                        opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                        y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                        scale: { duration: 0.6, delay: 0.6 }
-                    }}
-                    whileHover={{
-                        rotateY: 180,
-                        scale: 1.2,
-                        opacity: 1
-                    }}
-                    className="mb-8 text-primary font-mono font-bold text-3xl tracking-tighter cursor-pointer"
-                    style={{ transformStyle: "preserve-3d" }}
-                >
-                    {`/>`}
-                </motion.div>
-
-                {/* Magnetic Buttons */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.8 }}
-                    className="flex flex-col sm:flex-row gap-6"
-                >
-                    <MagneticButton
-                        href="#contato"
-                        strength={0.25}
-                        className="group relative inline-flex h-14 sm:h-16 items-center justify-center overflow-hidden rounded-2xl bg-primary px-10 font-bold text-lg text-white shadow-2xl shadow-primary/30"
-                    >
-                        <span className="relative z-10 flex items-center gap-2">
-                            {t('hero.cta')}
-                            <LordIcon
-                                src={LORDICON_ICONS.ARROW_RIGHT}
-                                trigger="loop-on-hover"
-                                size={24}
-                                colors={{ primary: "#ffffff", secondary: "#ffffff" }}
-                            />
-                        </span>
-
-                        {/* Animated shimmer effect */}
-                        <motion.div
-                            className="absolute inset-0 w-full h-full"
-                            animate={{
-                                backgroundPosition: ["0% 50%", "100% 50%"],
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "linear"
-                            }}
-                            style={{
-                                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
-                                backgroundSize: "200% 100%"
-                            }}
-                        />
-                    </MagneticButton>
-
-                    <MagneticButton
-                        href="#portfolio"
-                        strength={0.2}
-                        className="inline-flex h-14 sm:h-16 items-center justify-center rounded-2xl border-2 border-border bg-background/50 backdrop-blur-xl px-10 font-bold text-lg hover:bg-accent hover:border-primary/50 transition-all"
-                    >
-                        {t('hero.viewProjects')}
-                    </MagneticButton>
-                </motion.div>
-            </div>
-        </section>
-    );
+      {showScroll && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
+        >
+          <span className="editorial-label">{t("hero.scroll")}</span>
+          <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <ArrowDown className="w-4 h-4" />
+          </motion.div>
+        </motion.div>
+      )}
+    </section>
+  );
 }

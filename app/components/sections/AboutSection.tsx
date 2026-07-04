@@ -1,261 +1,139 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, Clock, DollarSign, Rocket, Shield, TrendingUp, Users, Zap } from "lucide-react";
+import { CheckCircle2, Rocket, Shield, Zap } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import { TiltCard } from "@/app/components/ui/TiltCard";
-import { AnimatedCounter } from "@/app/components/ui/AnimatedCounter";
-import { useScrollReveal } from "@/lib/hooks/useScrollReveal";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
 import { TextReveal } from "@/app/components/animations/TextReveal";
-import { ParallaxLayer } from "@/app/components/animations/ParallaxLayer";
-import { cinematicStagger, cinematicItem, cinematicEase, fadeInUp, staggerContainer } from "@/lib/animations";
-import LordIcon from "@/app/components/ui/LordIcon";
-import { LORDICON_ICONS } from "@/lib/lordicon-icons";
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 
-export function AboutSection({ config }: { config?: any }) {
-    const { t } = useLanguage();
-    const { ref: statsRef, isInView: statsInView } = useScrollReveal();
+interface AboutConfig {
+  aboutTitle?: string;
+  aboutDescription?: string;
+}
 
-    const benefits = [
-        {
-            icon: Rocket,
-            title: t('about.benefit1.title'),
-            description: t('about.benefit1.description'),
-            highlight: t('about.benefit1.highlight')
-        },
-        {
-            icon: DollarSign,
-            title: t('about.benefit2.title'),
-            description: t('about.benefit2.description'),
-            highlight: t('about.benefit2.highlight')
-        },
-        {
-            icon: Shield,
-            title: t('about.benefit3.title'),
-            description: t('about.benefit3.description'),
-            highlight: t('about.benefit3.highlight')
-        }
-    ];
+export function AboutSection({ config }: { config?: AboutConfig | null }) {
+  const { t } = useLanguage();
 
-    const results = [
-        { icon: LORDICON_ICONS.USERS, value: "100", label: t('about.results.clients'), color: "#22c55e", suffix: "%" }, // green-500
-        { icon: LORDICON_ICONS.TRENDING_UP, value: "+50", label: t('about.results.projects'), color: "#3b82f6" }, // blue-500
-        { icon: LORDICON_ICONS.SHIELD, value: "100%", label: "Garantia de Qualidade", color: "#a855f7", suffix: "%" }, // purple-500
-    ];
+  const stats = [
+    { value: 100, suffix: "%", label: t("about.results.clients") },
+    { value: 50, prefix: "+", label: t("about.results.projects") },
+    { value: 24, suffix: "h", label: t("about.results.support") },
+  ];
 
-    const whatYouGet = [
-        { icon: CheckCircle2, text: t('about.whatYouGet.item1') },
-        { icon: CheckCircle2, text: t('about.whatYouGet.item2') },
-        { icon: CheckCircle2, text: t('about.whatYouGet.item3') },
-        { icon: CheckCircle2, text: t('about.whatYouGet.item4') },
-        { icon: CheckCircle2, text: t('about.whatYouGet.item5') },
-        { icon: CheckCircle2, text: t('about.whatYouGet.item6') },
-    ];
+  const differentiators = [
+    { icon: Zap, title: t("diff.item1.title"), desc: t("diff.item1.desc") },
+    { icon: Shield, title: t("diff.item2.title"), desc: t("diff.item2.desc") },
+    { icon: Rocket, title: t("diff.item3.title"), desc: t("diff.item3.desc") },
+  ];
 
-    return (
-        <SectionTransition parallaxIntensity={0.03}>
-            <section id="sobre" className="py-20 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
-                {/* Subtle background gradient blob */}
-                <ParallaxLayer speed={-0.2}>
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.1, 1],
-                            opacity: [0.05, 0.1, 0.05],
-                        }}
-                        transition={{
-                            duration: 12,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                        className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none"
-                    />
-                </ParallaxLayer>
+  const whatYouGet = [
+    t("about.whatYouGet.item1"),
+    t("about.whatYouGet.item2"),
+    t("about.whatYouGet.item3"),
+    t("about.whatYouGet.item4"),
+    t("about.whatYouGet.item5"),
+    t("about.whatYouGet.item6"),
+  ];
 
-                <div className="container px-4 md:px-6 relative z-10">
+  return (
+    <SectionTransition variant="clipReveal">
+      <section id="sobre" className="section-padding border-t border-border">
+        <div className="container px-4 md:px-6">
+          <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
+            <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
+              <p className="editorial-label mb-6">01 — {t("nav.about")}</p>
+              <TextReveal>
+                <h2 className="headline-lg mb-6">
+                  {config?.aboutTitle || t("about.header.title")}{" "}
+                  <span className="text-primary">{t("about.header.highlight")}</span>
+                </h2>
+              </TextReveal>
+              <TextReveal delay={0.15}>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  {config?.aboutDescription || t("about.header.subtitle")}
+                </p>
+              </TextReveal>
 
-                    {/* Header */}
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <TextReveal>
-                            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                                {t('about.header.title')} <span className="text-gradient-primary">{t('about.header.highlight')}</span>
-                            </h2>
-                        </TextReveal>
-                        <TextReveal delay={0.15}>
-                            <p className="text-lg text-muted-foreground">
-                                {t('about.header.subtitle')}
-                            </p>
-                        </TextReveal>
+              <div className="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-border">
+                {stats.map((stat, i) => (
+                  <BlurFade key={stat.label} delay={0.1 * i}>
+                    <div>
+                      <p className="font-display text-3xl md:text-4xl text-primary">
+                        {stat.prefix}
+                        <NumberTicker value={stat.value} />
+                        {stat.suffix}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
                     </div>
+                  </BlurFade>
+                ))}
+              </div>
+            </div>
 
-                    {/* Benefits Grid with 3D Tilt — Cinematic Stagger */}
-                    <motion.div
-                        className="grid md:grid-cols-3 gap-6 mb-16"
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-60px" }}
-                        variants={cinematicStagger}
-                    >
-                        {benefits.map((benefit, index) => (
-                            <motion.div
-                                key={index}
-                                variants={cinematicItem}
-                            >
-                                <TiltCard
-                                    className="relative group p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all overflow-hidden h-full"
-                                    tiltStrength={8}
-                                >
-                                    {/* Animated gradient on hover */}
-                                    <motion.div
-                                        className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-                                        style={{ transform: "translateZ(-10px)" }}
-                                    />
-
-                                    <div className="relative" style={{ transform: "translateZ(20px)" }}>
-                                        <motion.div
-                                            className="mb-4 p-3 rounded-xl bg-primary/10 w-fit group-hover:bg-primary group-hover:text-white transition-all"
-                                            whileHover={{ scale: 1.1, rotate: 5 }}
-                                        >
-                                            <benefit.icon className="w-6 h-6" />
-                                        </motion.div>
-                                        <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-                                        <p className="text-muted-foreground mb-4">{benefit.description}</p>
-                                        <motion.div
-                                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20"
-                                            whileHover={{ scale: 1.05 }}
-                                        >
-                                            <motion.div
-                                                animate={{ scale: [1, 1.2, 1] }}
-                                                transition={{ duration: 1.5, repeat: Infinity }}
-                                            >
-                                                <Zap className="w-4 h-4 text-green-500" />
-                                            </motion.div>
-                                            <span className="text-sm font-semibold text-green-500">{benefit.highlight}</span>
-                                        </motion.div>
-                                    </div>
-                                </TiltCard>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* Results with Animated Counters */}
-                    <motion.div
-                        ref={statsRef}
-                        initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-                        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7, ease: cinematicEase }}
-                        className="grid grid-cols-3 gap-4 mb-16 p-8 rounded-2xl bg-gradient-to-r from-primary/5 to-blue-500/5 border border-primary/20 backdrop-blur-sm"
-                    >
-                        {results.map((result, index) => (
-                            <motion.div
-                                key={index}
-                                className="text-center group cursor-pointer"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                            >
-                                <motion.div
-                                    animate={{
-                                        y: [0, -5, 0],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        delay: index * 0.2
-                                    }}
-                                >
-                                    <LordIcon
-                                        src={result.icon as string}
-                                        trigger="loop-on-hover"
-                                        size={32}
-                                        colors={{ primary: result.color, secondary: result.color }}
-                                        className="mx-auto mb-2"
-                                    />
-                                </motion.div>
-                                <div className="text-3xl md:text-4xl font-bold mb-1">
-                                    {statsInView ? <AnimatedCounter value={result.value} duration={1.5} /> : result.value}
-                                </div>
-                                <div className="text-xs md:text-sm text-muted-foreground">{result.label}</div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* What You Get */}
-                    <div className="max-w-4xl mx-auto">
-                        <div className="text-center mb-8">
-                            <TextReveal>
-                                <h3 className="text-2xl md:text-3xl font-bold mb-4">{t('about.whatYouGet.title')}</h3>
-                            </TextReveal>
-                            <TextReveal delay={0.1}>
-                                <p className="text-muted-foreground">{t('about.whatYouGet.subtitle')}</p>
-                            </TextReveal>
-                        </div>
-
-                        <motion.div
-                            className="grid sm:grid-cols-2 gap-4"
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: "-100px" }}
-                            variants={cinematicStagger}
-                        >
-                            {whatYouGet.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    variants={cinematicItem}
-                                    whileHover={{ x: 4, scale: 1.02 }}
-                                    className="flex items-start gap-3 p-4 rounded-lg bg-card/50 border border-border/50 hover:border-primary/30 hover:bg-card transition-all group cursor-pointer"
-                                >
-                                    <motion.div
-                                        initial={{ scale: 0 }}
-                                        whileInView={{ scale: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.05 + 0.2, type: "spring" }}
-                                    >
-                                        <item.icon className="flex-shrink-0 mt-0.5 w-5 h-5 text-green-500" />
-                                    </motion.div>
-                                    <span className="text-sm md:text-base">{item.text}</span>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-
-                        {/* CTA */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.7, ease: cinematicEase }}
-                            className="mt-12 text-center p-8 rounded-2xl bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/20 relative overflow-hidden group"
-                        >
-                            {/* Animated shine effect */}
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                                animate={{
-                                    x: ["-100%", "200%"],
-                                }}
-                                transition={{
-                                    duration: 3,
-                                    repeat: Infinity,
-                                    ease: "linear",
-                                    repeatDelay: 2
-                                }}
-                            />
-
-                            <h4 className="text-xl font-bold mb-2 relative z-10">{t('about.cta.title')}</h4>
-                            <p className="text-muted-foreground mb-6 relative z-10">{t('about.cta.subtitle')}</p>
-                            <motion.a
-                                href="#contato"
-                                className="relative z-10 inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg shadow-lg shadow-primary/20"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <Rocket className="w-5 h-5" />
-                                {t('about.cta.button')}
-                            </motion.a>
-                        </motion.div>
-                    </div>
-
+            <div className="lg:col-span-7 space-y-16">
+              <div>
+                <p className="editorial-label mb-8">{t("about.whatYouGet.title")}</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {whatYouGet.map((item, i) => (
+                    <BlurFade key={i} delay={0.05 * i}>
+                      <div className="flex items-start gap-3 p-4 border border-border/60 hover:border-primary/40 transition-colors">
+                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        <span className="text-sm">{item}</span>
+                      </div>
+                    </BlurFade>
+                  ))}
                 </div>
-            </section>
-        </SectionTransition>
-    );
+              </div>
+
+              <div>
+                <p className="editorial-label mb-8">
+                  {t("diff.title")} <span className="text-primary">{t("diff.highlight")}</span>
+                </p>
+                <div className="space-y-0 divide-y divide-border border-y border-border">
+                  {differentiators.map((item, i) => (
+                    <BlurFade key={item.title} delay={0.08 * i}>
+                      <div className="py-8 group">
+                        <div className="flex items-start gap-6">
+                          <span className="font-display text-4xl text-foreground/20 group-hover:text-primary transition-colors">
+                            0{i + 1}
+                          </span>
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <item.icon className="w-4 h-4 text-primary" />
+                              <h3 className="font-display text-xl">{item.title}</h3>
+                            </div>
+                            <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
+                              {item.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </BlurFade>
+                  ))}
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="p-8 border border-primary/30 bg-primary/5"
+              >
+                <h4 className="font-display text-2xl mb-2">{t("about.cta.title")}</h4>
+                <p className="text-muted-foreground mb-6">{t("about.cta.subtitle")}</p>
+                <a
+                  href="#contato"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+                >
+                  {t("about.cta.button")}
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </SectionTransition>
+  );
 }

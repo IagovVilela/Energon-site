@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -12,34 +13,40 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
+                const email = credentials?.email?.trim().toLowerCase();
+                const password = credentials?.password;
+
+                if (!email || !password) {
                     return null;
                 }
 
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email
+                try {
+                    const user = await prisma.user.findUnique({
+                        where: { email }
+                    });
+
+                    if (!user) {
+                        return null;
                     }
-                });
 
-                if (!user) {
+                    const isPasswordValid = await bcrypt.compare(
+                        password,
+                        user.password
+                    );
+
+                    if (!isPasswordValid) {
+                        return null;
+                    }
+
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name
+                    };
+                } catch (error) {
+                    console.error("[auth] Falha ao validar credenciais:", error);
                     return null;
                 }
-
-                const isPasswordValid = await bcrypt.compare(
-                    credentials.password,
-                    user.password
-                );
-
-                if (!isPasswordValid) {
-                    return null;
-                }
-
-                return {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name
-                };
             }
         })
     ],

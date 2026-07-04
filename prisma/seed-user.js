@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 async function main() {
     const email = 'iagovventura@gmail.com';
-    const passwordRaw = '123456';
+    const passwordRaw = process.env.ADMIN_PASSWORD || 'admin123';
 
     console.log(`Creating Admin User: ${email}`);
 

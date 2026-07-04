@@ -22,6 +22,22 @@ const translations = {
         'hero.subtitle': 'Sistemas web personalizados, otimizados para performance e conversão.',
         'hero.cta': 'Solicitar Orçamento',
         'hero.viewProjects': 'Ver Projetos',
+        'hero.scroll': 'Scroll',
+
+        // Navigation
+        'nav.about': 'Sobre',
+        'nav.services': 'Serviços',
+        'nav.portfolio': 'Portfólio',
+        'nav.process': 'Processo',
+        'nav.contact': 'Contato',
+        'nav.cta': 'Orçamento',
+
+        // Footer
+        'footer.tagline': 'Sistemas web personalizados com engenharia sólida e design cinematográfico.',
+        'footer.navigation': 'Navegação',
+        'footer.connect': 'Conectar',
+        'footer.rights': 'Todos os direitos reservados.',
+        'footer.admin': 'Área administrativa',
 
         // About Section
         'about.header.title': 'Por que empresas escolhem',
@@ -102,8 +118,15 @@ const translations = {
         'portfolio.viewDetails': 'Ver Detalhes',
         'portfolio.madeWith': 'Como foi feito',
         'portfolio.noImages': 'Nenhuma imagem do processo anexada ainda.',
+        'portfolio.filterAll': 'Todos',
+        'portfolio.modal.showcase': 'Projeto em destaque',
+        'portfolio.modal.liveDemo': 'Ver demonstração',
+        'portfolio.modal.techStack': 'Stack tecnológica',
+        'portfolio.modal.close': 'Fechar',
+        'portfolio.modal.footer': 'Energon © 2026',
 
         // CTA Section (Final)
+        'cta.badge': 'Inicie sua jornada',
         'cta.main.title': 'Pronto para transformar seu negócio?',
         'cta.main.subtitle': 'Vamos tirar sua ideia do papel e criar algo extraordinário juntos.',
         'cta.main.button': 'Começar Agora',
@@ -128,6 +151,7 @@ const translations = {
         'contact.form.error': 'Erro ao enviar mensagem',
         'contact.fastResponse.title': 'Resposta Rápida',
         'contact.fastResponse.desc': 'Normalmente respondo a todas as consultas em até 24 horas. Seu projeto é importante para mim, e estou ansioso para discutir como podemos trabalhar juntos.',
+        'contact.chatNow': 'Conversar no WhatsApp',
     },
     en: {
         // Hero Section
@@ -138,6 +162,22 @@ const translations = {
         'hero.subtitle': 'Custom web systems, optimized for performance and conversion.',
         'hero.cta': 'Request Quote',
         'hero.viewProjects': 'View Projects',
+        'hero.scroll': 'Scroll',
+
+        // Navigation
+        'nav.about': 'About',
+        'nav.services': 'Services',
+        'nav.portfolio': 'Portfolio',
+        'nav.process': 'Process',
+        'nav.contact': 'Contact',
+        'nav.cta': 'Get Quote',
+
+        // Footer
+        'footer.tagline': 'Custom web systems with solid engineering and cinematic design.',
+        'footer.navigation': 'Navigation',
+        'footer.connect': 'Connect',
+        'footer.rights': 'All rights reserved.',
+        'footer.admin': 'Admin area',
 
         // About Section
         'about.header.title': 'Why companies choose to',
@@ -218,8 +258,15 @@ const translations = {
         'portfolio.viewDetails': 'View Details',
         'portfolio.madeWith': 'How it was made',
         'portfolio.noImages': 'No process images attached yet.',
+        'portfolio.filterAll': 'All',
+        'portfolio.modal.showcase': 'Project showcase',
+        'portfolio.modal.liveDemo': 'View live demo',
+        'portfolio.modal.techStack': 'Technology stack',
+        'portfolio.modal.close': 'Close',
+        'portfolio.modal.footer': 'Energon © 2026',
 
         // CTA Section (Final)
+        'cta.badge': 'Start your journey',
         'cta.main.title': 'Ready to transform your business?',
         'cta.main.subtitle': "Let's take your idea off the paper and create something extraordinary together.",
         'cta.main.button': 'Get Started Now',
@@ -244,6 +291,7 @@ const translations = {
         'contact.form.error': 'Error sending message',
         'contact.fastResponse.title': 'Fast Response',
         'contact.fastResponse.desc': 'I typically respond to all inquiries within 24 hours. Your project is important to me, and I look forward to discussing how we can work together.',
+        'contact.chatNow': 'Chat on WhatsApp',
     },
 };
 

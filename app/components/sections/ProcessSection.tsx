@@ -1,97 +1,75 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { MessageSquare, FileText, Code2, Rocket } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
 import { TextReveal } from "@/app/components/animations/TextReveal";
-import { CinematicReveal } from "@/app/components/animations/CinematicReveal";
-import { cinematicEase } from "@/lib/animations";
 
 export function ProcessSection() {
-    const { t } = useLanguage();
+  const { t } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    const steps = [
-        { icon: MessageSquare, title: t('process.step1.title'), description: t('process.step1.desc') },
-        { icon: FileText, title: t('process.step2.title'), description: t('process.step2.desc') },
-        { icon: Code2, title: t('process.step3.title'), description: t('process.step3.desc') },
-        { icon: Rocket, title: t('process.step4.title'), description: t('process.step4.desc') },
-    ];
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-    return (
-        <SectionTransition parallaxIntensity={-0.03}>
-            <section id="processo" className="py-24 relative overflow-hidden bg-muted/5">
-                {/* Background Elements */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/5 blur-[100px] -rotate-12 rounded-full pointer-events-none" />
+  const lineWidth = useTransform(scrollYProgress, [0.1, 0.8], ["0%", "100%"]);
 
-                <div className="container px-4 md:px-6 relative z-10">
-                    <div className="text-center mb-16">
-                        <TextReveal>
-                            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                                {t('process.title.prefix')} <span className="text-primary">{t('process.title.highlight')}</span>
-                            </h2>
-                        </TextReveal>
-                        <TextReveal delay={0.1}>
-                            <p className="text-muted-foreground">{t('process.subtitle')}</p>
-                        </TextReveal>
-                    </div>
+  const steps = [
+    { icon: MessageSquare, title: t("process.step1.title"), description: t("process.step1.desc") },
+    { icon: FileText, title: t("process.step2.title"), description: t("process.step2.desc") },
+    { icon: Code2, title: t("process.step3.title"), description: t("process.step3.desc") },
+    { icon: Rocket, title: t("process.step4.title"), description: t("process.step4.desc") },
+  ];
 
-                    <div className="relative">
-                        {/* Connecting Line (Desktop) — revealed with cinematic clip */}
-                        <CinematicReveal direction="left" duration={1.2} delay={0.3}>
-                            <div className="hidden md:block absolute top-[24px] left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-                        </CinematicReveal>
+  return (
+    <SectionTransition variant="slideUp">
+      <section id="processo" className="section-padding border-t border-border">
+        <div className="container px-4 md:px-6" ref={containerRef}>
+          <div className="mb-20">
+            <p className="editorial-label mb-6">04 — {t("nav.process")}</p>
+            <TextReveal>
+              <h2 className="headline-lg">
+                {t("process.title.prefix")}{" "}
+                <span className="text-primary">{t("process.title.highlight")}</span>
+              </h2>
+            </TextReveal>
+            <TextReveal delay={0.1}>
+              <p className="text-muted-foreground mt-4 max-w-lg">{t("process.subtitle")}</p>
+            </TextReveal>
+          </div>
 
-                        <div className="grid md:grid-cols-4 gap-8">
-                            {steps.map((step, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{
-                                        opacity: 0,
-                                        y: 30,
-                                        filter: "blur(6px)",
-                                    }}
-                                    whileInView={{
-                                        opacity: 1,
-                                        y: 0,
-                                        filter: "blur(0px)",
-                                    }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                        delay: index * 0.15,
-                                        duration: 0.6,
-                                        ease: cinematicEase,
-                                    }}
-                                    className="relative flex flex-col items-center text-center group"
-                                >
-                                    {/* Dot on line */}
-                                    <motion.div
-                                        className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-background border-2 border-primary rounded-full z-10 group-hover:scale-150 group-hover:bg-primary transition-all duration-300"
-                                        initial={{ scale: 0 }}
-                                        whileInView={{ scale: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{
-                                            delay: index * 0.15 + 0.3,
-                                            type: "spring",
-                                            stiffness: 400,
-                                            damping: 15,
-                                        }}
-                                    />
+          <div className="relative">
+            <div className="hidden md:block absolute top-6 left-0 right-0 h-px bg-border">
+              <motion.div className="h-full bg-primary origin-left" style={{ width: lineWidth }} />
+            </div>
 
-                                    <div className="mt-8 md:mt-12 p-6 rounded-2xl bg-card border border-border/50 backdrop-blur-sm hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 w-full h-full flex flex-col items-center">
-                                        <div className="w-16 h-16 mx-auto bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-500 group-hover:rotate-12">
-                                            <step.icon className="w-8 h-8" />
-                                        </div>
-                                        <h3 className="font-bold text-lg mb-3">{step.title}</h3>
-                                        <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-        </SectionTransition>
-    );
+            <div className="grid md:grid-cols-4 gap-12 md:gap-8">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ delay: index * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative"
+                >
+                  <div className="hidden md:flex w-3 h-3 bg-primary mb-8 relative z-10" />
+                  <span className="font-display text-5xl text-foreground/10 mb-4 block md:hidden">
+                    0{index + 1}
+                  </span>
+                  <step.icon className="w-5 h-5 text-primary mb-4" />
+                  <h3 className="font-display text-lg mb-3">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </SectionTransition>
+  );
 }

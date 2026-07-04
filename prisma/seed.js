@@ -18,13 +18,20 @@ async function main() {
   // 1. Usuários
   console.log('Criando usuários...');
 
+  const adminEmail = 'iagovventura@gmail.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
   await prisma.user.upsert({
-    where: { email: 'iagovventura@gmail.com' },
-    update: {},
+    where: { email: adminEmail },
+    update: {
+      password: hashedPassword,
+      name: 'Iago Vilela',
+    },
     create: {
       id: 'cmkne7qe50000bsysm5vo68oe',
-      email: 'iagovventura@gmail.com',
-      password: '$2b$10$9QNOfkEjGhfe//OO/658Kut6NhR9qiUAhr3xTbSX7b/4KFOKTeY9q',
+      email: adminEmail,
+      password: hashedPassword,
       name: 'Iago Vilela',
       createdAt: new Date('2026-01-21T02:17:34.301Z'),
       updatedAt: new Date('2026-02-03T00:19:09.794Z')

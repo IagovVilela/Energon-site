@@ -2,10 +2,19 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
+    if (process.env.NODE_ENV === "production") {
+        const setupSecret = process.env.SETUP_SECRET;
+        const providedSecret = new URL(request.url).searchParams.get("secret");
+
+        if (!setupSecret || providedSecret !== setupSecret) {
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+        }
+    }
+
     try {
         const email = 'iagovventura@gmail.com'; // Admin Email
-        const password = 'admin'; // Default Password
+        const password = process.env.ADMIN_PASSWORD || 'admin123';
 
         const hashedPassword = await bcrypt.hash(password, 10);
 

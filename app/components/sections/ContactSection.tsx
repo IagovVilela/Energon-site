@@ -1,284 +1,146 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { siteConfig } from "@/app/config/site";
 import { sendContactEmail } from "@/app/actions/contact";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import LordIcon from "@/app/components/ui/LordIcon";
-import { LORDICON_ICONS } from "@/lib/lordicon-icons";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
 import { TextReveal } from "@/app/components/animations/TextReveal";
-import { CinematicReveal } from "@/app/components/animations/CinematicReveal";
-import { cinematicEase } from "@/lib/animations";
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-export function ContactSection({ config }: { config?: any }) {
-    const { t } = useLanguage();
-    const [isPending, startTransition] = useTransition();
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+interface ContactConfig {
+  email?: string;
+  phone?: string;
+  location?: string;
+}
 
-    const handleSubmit = async (formData: FormData) => {
-        setError(false);
-        setSuccess(false);
+export function ContactSection({ config }: { config?: ContactConfig | null }) {
+  const { t } = useLanguage();
+  const [isPending, startTransition] = useTransition();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
-        startTransition(async () => {
-            const result = await sendContactEmail(formData);
-            if (result.success) {
-                setSuccess(true);
-                // Reset form would be nice here but native forms need more handling
-            } else {
-                setError(true);
-            }
-        });
-    };
+  const email = config?.email || siteConfig.personal.email;
+  const phone = config?.phone || siteConfig.personal.phone;
+  const location = config?.location || siteConfig.personal.location;
 
-    return (
-        <SectionTransition parallaxIntensity={0.02}>
-            <section id="contato" className="py-24 relative bg-background overflow-hidden">
-                {/* Background elements */}
-                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+  const handleSubmit = async (formData: FormData) => {
+    setError(false);
+    setSuccess(false);
 
-                <div className="container px-4 md:px-6">
-                    <div className="grid lg:grid-cols-2 gap-16 items-start">
+    startTransition(async () => {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        setSuccess(true);
+      } else {
+        setError(true);
+      }
+    });
+  };
 
-                        {/* Left Side: Info */}
-                        <div className="space-y-12">
-                            <div>
-                                <TextReveal>
-                                    <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-                                        {t('contact.title')}
-                                    </h2>
-                                </TextReveal>
-                                <TextReveal delay={0.15}>
-                                    <p className="text-xl text-muted-foreground leading-relaxed">
-                                        {t('contact.subtitle')}
-                                    </p>
-                                </TextReveal>
-                            </div>
+  return (
+    <SectionTransition variant="slideUp">
+      <section id="contato" className="section-padding border-t border-border">
+        <div className="container px-4 md:px-6">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+            <div>
+              <p className="editorial-label mb-6">05 — {t("nav.contact")}</p>
+              <TextReveal>
+                <h2 className="headline-lg mb-6">{t("contact.title")}</h2>
+              </TextReveal>
+              <TextReveal delay={0.1}>
+                <p className="text-muted-foreground text-lg mb-12">{t("contact.subtitle")}</p>
+              </TextReveal>
 
-                            <div className="grid sm:grid-cols-2 gap-8">
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20, filter: "blur(6px)" }}
-                                    whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                    whileHover={{ y: -4 }}
-                                    className="p-8 rounded-[2rem] bg-card border border-border/50 group hover:border-primary/50 transition-all duration-500"
-                                >
-                                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
-                                        <Send className="w-6 h-6" />
-                                    </div>
-                                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('contact.email')}</h4>
-                                    <p className="font-bold text-base break-words">{siteConfig.personal.email}</p>
-                                </motion.div>
+              <div className="space-y-8">
+                <BlurFade>
+                  <div className="border-l-2 border-primary pl-6">
+                    <p className="editorial-label mb-1">{t("contact.email")}</p>
+                    <a href={`mailto:${email}`} className="font-display text-xl hover:text-primary transition-colors">
+                      {email}
+                    </a>
+                  </div>
+                </BlurFade>
+                <BlurFade delay={0.1}>
+                  <div className="border-l-2 border-border pl-6">
+                    <p className="editorial-label mb-1">{t("contact.phone")}</p>
+                    <p className="font-display text-xl mb-3">{phone}</p>
+                    <a
+                      href={`https://wa.me/${phone.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {t("contact.chatNow")}
+                    </a>
+                  </div>
+                </BlurFade>
+                <BlurFade delay={0.2}>
+                  <div className="border-l-2 border-border pl-6">
+                    <p className="editorial-label mb-1">{t("contact.location")}</p>
+                    <p className="text-muted-foreground">{location}</p>
+                  </div>
+                </BlurFade>
+              </div>
+            </div>
 
-                                <motion.div
-                                    initial={{ opacity: 0, x: 20, filter: "blur(6px)" }}
-                                    whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                    whileHover={{ y: -4 }}
-                                    className="p-8 rounded-[2rem] bg-card border border-border/50 group hover:border-primary/50 transition-all duration-500"
-                                >
-                                    <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 mb-6 group-hover:bg-green-500 group-hover:text-white transition-all">
-                                        <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                                        </svg>
-                                    </div>
-                                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">{t('contact.phone')}</h4>
-                                    <p className="font-bold text-lg mb-4">{siteConfig.personal.phone}</p>
-                                    <a
-                                        href={`https://wa.me/${siteConfig.personal.phone.replace(/\D/g, '')}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 text-green-500 font-bold text-sm hover:bg-green-500 hover:text-white transition-all group-hover:shadow-lg shadow-green-500/20"
-                                    >
-                                        Conversar agora
-                                        <LordIcon
-                                            src={LORDICON_ICONS.ARROW_RIGHT}
-                                            trigger="loop-on-hover"
-                                            size={20}
-                                            colors={{ primary: "#22c55e", secondary: "#22c55e" }}
-                                        />
-                                    </a>
-                                </motion.div>
-                            </div>
-
-                            <motion.div
-                                initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.4, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                className="p-8 rounded-[2rem] bg-gradient-to-br from-primary/5 to-blue-500/5 border border-primary/10"
-                            >
-                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-4">
-                                    <LordIcon
-                                        src={LORDICON_ICONS.CHECK}
-                                        trigger="loop"
-                                        size={16}
-                                        colors={{ primary: "#3b82f6", secondary: "#3b82f6" }}
-                                    />
-                                    {t('contact.fastResponse.title')}
-                                </h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed">
-                                    {t('contact.fastResponse.desc')}
-                                </p>
-                            </motion.div>
-                        </div>
-
-                        {/* Right Side: Form */}
-                        <motion.div
-                            initial={{
-                                opacity: 0,
-                                scale: 0.95,
-                                filter: "blur(10px)",
-                            }}
-                            whileInView={{
-                                opacity: 1,
-                                scale: 1,
-                                filter: "blur(0px)",
-                            }}
-                            viewport={{ once: true }}
-                            transition={{
-                                duration: 0.8,
-                                ease: cinematicEase,
-                            }}
-                            className="p-8 md:p-12 rounded-[3rem] bg-card border border-border shadow-2xl relative"
-                        >
-                            <form action={handleSubmit} className="space-y-6">
-                                {[
-                                    { label: t('contact.form.name'), name: "name", type: "text", placeholder: t('contact.form.namePlaceholder'), delay: 0 },
-                                    { label: t('contact.form.email'), name: "email", type: "email", placeholder: t('contact.form.emailPlaceholder'), delay: 0.08 },
-                                    { label: t('contact.form.subject'), name: "subject", type: "text", placeholder: t('contact.form.subjectPlaceholder'), delay: 0.16 },
-                                ].map((field) => (
-                                    <motion.div
-                                        key={field.name}
-                                        className="space-y-4"
-                                        initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-                                        whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                                        viewport={{ once: true }}
-                                        transition={{
-                                            delay: field.delay + 0.3,
-                                            duration: 0.5,
-                                            ease: cinematicEase,
-                                        }}
-                                    >
-                                        <label className="text-sm font-bold uppercase tracking-wider ml-1">{field.label}</label>
-                                        <input
-                                            name={field.name}
-                                            type={field.type}
-                                            required
-                                            placeholder={field.placeholder}
-                                            className="w-full px-6 py-4 rounded-2xl bg-muted/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                                        />
-                                    </motion.div>
-                                ))}
-
-                                <motion.div
-                                    className="space-y-4"
-                                    initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-                                    whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.54, duration: 0.5, ease: cinematicEase }}
-                                >
-                                    <label className="text-sm font-bold uppercase tracking-wider ml-1">{t('contact.form.message')}</label>
-                                    <textarea
-                                        name="message"
-                                        required
-                                        rows={4}
-                                        placeholder={t('contact.form.messagePlaceholder')}
-                                        className="w-full px-6 py-4 rounded-2xl bg-muted/50 border border-border focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none resize-none"
-                                    />
-                                </motion.div>
-
-                                <motion.button
-                                    type="submit"
-                                    disabled={isPending}
-                                    className="w-full py-5 rounded-2xl bg-primary text-white font-bold text-lg shadow-xl shadow-primary/20 flex items-center justify-center gap-3 disabled:opacity-70"
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.6, duration: 0.5 }}
-                                >
-                                    {isPending ? (
-                                        <motion.div
-                                            className="flex items-center gap-3"
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                        >
-                                            <motion.div
-                                                className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                                                animate={{ rotate: 360 }}
-                                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                            />
-                                            {t('contact.form.sending')}
-                                        </motion.div>
-                                    ) : (
-                                        <>
-                                            {t('contact.form.submit')}
-                                            <motion.div
-                                                initial={{ x: 0 }}
-                                                whileHover={{ x: 5 }}
-                                            >
-                                                <LordIcon
-                                                    src={LORDICON_ICONS.ARROW_RIGHT}
-                                                    trigger="loop-on-hover"
-                                                    size={20}
-                                                    colors={{ primary: "#ffffff", secondary: "#ffffff" }}
-                                                />
-                                            </motion.div>
-                                        </>
-                                    )}
-                                </motion.button>
-
-                                {/* Status Messages */}
-                                <AnimatePresence>
-                                    {success && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.9 }}
-                                            className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-500 text-center font-medium flex items-center justify-center gap-2"
-                                        >
-                                            <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ delay: 0.2, type: "spring" }}
-                                            >
-                                                <LordIcon
-                                                    src={LORDICON_ICONS.CHECK}
-                                                    trigger="loop"
-                                                    size={20}
-                                                    colors={{ primary: "#22c55e", secondary: "#22c55e" }}
-                                                />
-                                            </motion.div>
-                                            {t('contact.form.success')}
-                                        </motion.div>
-                                    )}
-                                    {error && (
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                x: [0, -10, 10, -10, 10, 0]
-                                            }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.5 }}
-                                            className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-center font-medium"
-                                        >
-                                            {t('contact.form.error')}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </form>
-                        </motion.div>
-                    </div>
+            <BlurFade delay={0.15}>
+              <form action={handleSubmit} className="border border-border p-8 md:p-10 space-y-6">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="editorial-label block mb-2">{t("contact.form.name")}</label>
+                    <Input name="name" required placeholder={t("contact.form.namePlaceholder")} className="bg-background border-border rounded-none" />
+                  </div>
+                  <div>
+                    <label className="editorial-label block mb-2">{t("contact.form.email")}</label>
+                    <Input name="email" type="email" required placeholder={t("contact.form.emailPlaceholder")} className="bg-background border-border rounded-none" />
+                  </div>
                 </div>
-            </section>
-        </SectionTransition>
-    );
+                <div>
+                  <label className="editorial-label block mb-2">{t("contact.form.subject")}</label>
+                  <Input name="subject" required placeholder={t("contact.form.subjectPlaceholder")} className="bg-background border-border rounded-none" />
+                </div>
+                <div>
+                  <label className="editorial-label block mb-2">{t("contact.form.message")}</label>
+                  <Textarea name="message" required rows={5} placeholder={t("contact.form.messagePlaceholder")} className="bg-background border-border rounded-none resize-none" />
+                </div>
+
+                <AnimatePresence>
+                  {success && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-primary">
+                      {t("contact.form.success")}
+                    </motion.p>
+                  )}
+                  {error && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-destructive">
+                      {t("contact.form.error")}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+
+                <Button type="submit" disabled={isPending} className="w-full h-14 rounded-none font-semibold">
+                  {isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t("contact.form.sending")}
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      {t("contact.form.submit")}
+                    </>
+                  )}
+                </Button>
+              </form>
+            </BlurFade>
+          </div>
+        </div>
+      </section>
+    </SectionTransition>
+  );
 }

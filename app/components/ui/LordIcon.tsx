@@ -1,98 +1,34 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { useEffect, useRef } from "react";
 
-import lottie from "lottie-web";
-import { defineElement } from "@lordicon/element";
-
-// Register the custom element with the lottie-web instance
-
+const LordIconInner = dynamic(() => import("./LordIconInner"), {
+  ssr: false,
+  loading: () => <span className="inline-block bg-muted/30 animate-pulse rounded" style={{ width: 24, height: 24 }} />,
+});
 
 export type LordIconTrigger =
-    | "hover"
-    | "click"
-    | "loop"
-    | "loop-on-hover"
-    | "morph"
-    | "boomerang";
+  | "hover"
+  | "click"
+  | "loop"
+  | "loop-on-hover"
+  | "morph"
+  | "boomerang";
 
 interface LordIconProps {
-    src: string;
-    trigger?: LordIconTrigger;
-    colors?: {
-        primary?: string;
-        secondary?: string;
-    };
-    delay?: number;
-    size?: number;
-    className?: string;
+  src: string;
+  trigger?: LordIconTrigger;
+  colors?: {
+    primary?: string;
+    secondary?: string;
+  };
+  delay?: number;
+  size?: number;
+  className?: string;
 }
 
-const LordIcon = ({
-    src,
-    trigger = "hover",
-    colors,
-    delay,
-    size = 24,
-    className,
-}: LordIconProps) => {
-    const iconRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        // Inicializa o elemento customizado do Lordicon
-        // Precisamos garantir que isso rode no cliente com a instância do lottie
-        if (typeof window !== "undefined") {
-            try {
-                // @ts-ignore
-                defineElement(lottie.loadAnimation);
-            } catch (error) {
-                console.error("Erro ao inicializar Lordicon:", error);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        if (iconRef.current) {
-            const element = iconRef.current as any;
-
-            // Handle colors if provided
-            if (colors) {
-                element.colors = `primary:${colors.primary},secondary:${colors.secondary}`;
-            }
-        }
-    }, [colors]);
-
-    return (
-        <div
-            className={`flex items-center justify-center ${className || ""}`}
-            style={{ width: size, height: size }}
-        >
-            <lord-icon
-                ref={iconRef}
-                src={src}
-                trigger={trigger}
-                delay={delay}
-                style={{ width: "100%", height: "100%" }}
-            />
-        </div>
-    );
-};
-
-// Add type definition for the custom element
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            "lord-icon": React.DetailedHTMLProps<
-                React.HTMLAttributes<HTMLElement> & {
-                    src?: string;
-                    trigger?: string;
-                    delay?: number;
-                    colors?: string;
-                },
-                HTMLElement
-            >;
-        }
-    }
+export default function LordIcon(props: LordIconProps) {
+  return <LordIconInner {...props} />;
 }
 
-export default LordIcon;
