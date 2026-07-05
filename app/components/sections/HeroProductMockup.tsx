@@ -44,13 +44,13 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
 
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [8, -8]), {
-    stiffness: 120,
-    damping: 20,
+  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [6, -6]), {
+    stiffness: 180,
+    damping: 26,
   });
-  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-14, 14]), {
-    stiffness: 120,
-    damping: 20,
+  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-10, 10]), {
+    stiffness: 180,
+    damping: 26,
   });
 
   useEffect(() => {
@@ -88,11 +88,11 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
         <div className="absolute -inset-4 bg-primary/12 blur-3xl rounded-full pointer-events-none" />
 
         <motion.div
-          animate={prefersReducedMotion ? undefined : { y: [0, -6, 0] }}
+          animate={prefersReducedMotion ? undefined : { y: [0, -4, 0] }}
           transition={
             prefersReducedMotion
               ? undefined
-              : { y: { duration: 5, repeat: Infinity, ease: "easeInOut" } }
+              : { y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }
           }
           className="relative"
         >
@@ -102,7 +102,7 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
                 ? undefined
                 : { rotateX, rotateY, transformStyle: "preserve-3d" }
             }
-            className="relative will-change-transform"
+            className="relative"
           >
           <motion.div
             initial={{ opacity: 0, y: 28 }}

@@ -1,31 +1,15 @@
 "use client";
 
-import { RefObject } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import { BrandMark } from "@/app/components/brand/BrandMark";
+import { useBrandJourney } from "@/app/components/brand/BrandJourneyContext";
 
-interface AboutBrandPanelProps {
-  sectionRef: RefObject<HTMLElement | null>;
-}
-
-export function AboutBrandPanel({ sectionRef }: AboutBrandPanelProps) {
+export function AboutBrandPanel() {
   const { t } = useLanguage();
-  const prefersReducedMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const panelY = useTransform(scrollYProgress, [0, 0.45, 1], [48, 0, -32]);
-  const glowY = useTransform(scrollYProgress, [0, 1], [24, -48]);
-  const markScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1, 0.96]);
+  const { endRef, landed } = useBrandJourney();
 
   return (
-    <motion.div
-      style={prefersReducedMotion ? undefined : { y: panelY }}
-      className="relative mt-4 sm:mt-6 lg:mt-8 w-full min-h-[280px] sm:min-h-[340px] lg:min-h-[min(560px,calc(100vh-11rem))] flex-1"
-    >
+    <div className="relative mt-4 sm:mt-6 lg:mt-8 w-full min-h-[280px] sm:min-h-[340px] lg:min-h-[min(560px,calc(100vh-11rem))] flex-1">
       <div className="relative h-full min-h-[inherit] border border-border bg-card/40 overflow-hidden grain-overlay">
         <div
           className="absolute inset-0 opacity-40"
@@ -35,24 +19,19 @@ export function AboutBrandPanel({ sectionRef }: AboutBrandPanelProps) {
           }}
         />
 
-        <motion.div
-          style={prefersReducedMotion ? undefined : { y: glowY }}
-          className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-primary/20 blur-3xl rounded-full pointer-events-none"
-        />
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 pointer-events-none" />
 
         <div className="relative z-10 h-full min-h-[inherit] flex flex-col items-center justify-center p-8 sm:p-10">
-          <motion.div
-            style={prefersReducedMotion ? undefined : { scale: markScale }}
-            className="relative mb-6 sm:mb-8"
+          <div
+            ref={endRef}
+            className={`relative mb-6 sm:mb-8 transition-opacity duration-300 ${
+              landed ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <div className="absolute -inset-4 border border-primary/30 rotate-3 pointer-events-none" />
-            <div className="absolute -inset-4 border border-border -rotate-3 pointer-events-none" />
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 bg-primary text-primary-foreground flex items-center justify-center">
-              <span className="font-display font-bold text-5xl sm:text-6xl leading-none">E</span>
-            </div>
-          </motion.div>
+            <BrandMark size="lg" />
+          </div>
 
           <p className="font-display text-2xl sm:text-3xl tracking-[0.35em] text-foreground mb-3">
             ENERGON
@@ -71,6 +50,6 @@ export function AboutBrandPanel({ sectionRef }: AboutBrandPanelProps) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

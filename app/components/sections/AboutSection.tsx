@@ -78,7 +78,7 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                   ))}
                 </div>
 
-                <AboutBrandPanel sectionRef={sectionRef} />
+                <AboutBrandPanel />
               </div>
             </div>
 

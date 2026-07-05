@@ -28,6 +28,19 @@ interface Project {
   images?: { id: string; url: string; caption?: string }[];
 }
 
+function projectDescriptionPreview(description: string, maxLength = 140): string {
+  const plain = description
+    .replace(/#{1,6}\s+/g, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (plain.length <= maxLength) return plain;
+  return `${plain.slice(0, maxLength).trimEnd()}…`;
+}
+
 export function PortfolioSection({ initialProjects = [] }: { initialProjects: Project[] }) {
   const { t } = useLanguage();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -133,16 +146,42 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                   >
                     <Image
                       src={project.imageUrl || "/placeholder-project.jpg"}
-                      alt={project.title}
+                      alt=""
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      aria-hidden
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
-                      <span className="editorial-label text-primary mb-2 block">{project.category}</span>
-                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl mb-2">{project.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2 max-w-md">{project.description}</p>
-                      <span className="inline-flex items-center gap-2 mt-4 text-sm font-medium group-hover:text-primary transition-colors">
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-background from-35% via-background/75 via-55% to-transparent"
+                      aria-hidden
+                    />
+                    <div
+                      className={cn(
+                        "absolute inset-x-0 bottom-0 z-10 border-t border-border/60",
+                        "bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/88",
+                        isFeatured ? "p-5 sm:p-6 md:p-8" : "p-4 sm:p-5"
+                      )}
+                    >
+                      <span className="editorial-label text-primary mb-1.5 sm:mb-2 block">
+                        {project.category}
+                      </span>
+                      <h3
+                        className={cn(
+                          "font-display text-foreground leading-tight mb-1.5 sm:mb-2",
+                          isFeatured ? "text-xl sm:text-2xl md:text-3xl" : "text-lg sm:text-xl line-clamp-2"
+                        )}
+                      >
+                        {project.title}
+                      </h3>
+                      <p
+                        className={cn(
+                          "text-sm text-muted-foreground leading-snug",
+                          isFeatured ? "line-clamp-2 max-w-lg" : "line-clamp-1"
+                        )}
+                      >
+                        {projectDescriptionPreview(project.description, isFeatured ? 160 : 100)}
+                      </p>
+                      <span className="inline-flex items-center gap-2 mt-3 sm:mt-4 text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                         {t("portfolio.viewDetails")}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </span>
@@ -216,7 +255,9 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                 <div className="w-full lg:w-[42%] overflow-y-auto p-5 sm:p-8 md:p-12 flex-1 min-h-0">
                   <p className="editorial-label text-primary mb-3 sm:mb-4">{t("portfolio.modal.showcase")}</p>
                   <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">{selectedProject.title}</h2>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8">{selectedProject.description}</p>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8 whitespace-pre-line">
+                    {projectDescriptionPreview(selectedProject.description, 2000)}
+                  </p>
 
                   {selectedProject.link && (
                     <a

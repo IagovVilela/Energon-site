@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { ScrollProgress } from "@/app/components/animations/ScrollProgress";
 import { SmoothScroll } from "@/app/components/animations/SmoothScroll";
+import { BrandJourneyProvider } from "@/app/components/brand/BrandJourneyContext";
 
 interface CinematicPageProps {
   children: ReactNode;
@@ -10,9 +11,11 @@ interface CinematicPageProps {
 
 export function CinematicPage({ children }: CinematicPageProps) {
   return (
-    <SmoothScroll>
-      <ScrollProgress />
-      {children}
-    </SmoothScroll>
+    <BrandJourneyProvider>
+      <SmoothScroll>
+        <ScrollProgress />
+        {children}
+      </SmoothScroll>
+    </BrandJourneyProvider>
   );
 }

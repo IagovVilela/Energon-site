@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { MessageSquare, FileText, Code2, Rocket } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
@@ -10,13 +10,6 @@ import { TextReveal } from "@/app/components/animations/TextReveal";
 export function ProcessSection() {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const lineWidth = useTransform(scrollYProgress, [0.1, 0.8], ["0%", "100%"]);
 
   const steps = [
     { icon: MessageSquare, title: t("process.step1.title"), description: t("process.step1.desc") },
@@ -43,18 +36,16 @@ export function ProcessSection() {
           </div>
 
           <div className="relative">
-            <div className="hidden md:block absolute top-6 left-0 right-0 h-px bg-border">
-              <motion.div className="h-full bg-primary origin-left" style={{ width: lineWidth }} />
-            </div>
+            <div className="hidden md:block absolute top-6 left-0 right-0 h-px bg-primary/40" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-8">
               {steps.map((step, index) => (
                 <motion.div
                   key={step.title}
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-10%" }}
-                  transition={{ delay: index * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: index * 0.08, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                   className="relative"
                 >
                   <div className="hidden md:flex w-3 h-3 bg-primary mb-8 relative z-10" />

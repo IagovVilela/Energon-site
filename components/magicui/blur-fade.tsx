@@ -28,15 +28,15 @@ export function BlurFade({
   yOffset = 6,
   inView = true,
   inViewMargin = "-50px",
-  blur = "6px",
+  blur: _blur = "0px",
 }: BlurFadeProps) {
   const ref = useRef(null);
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin as `${number}px` });
   const isInView = !inView || inViewResult;
 
   const defaultVariants = {
-    hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
-    visible: { y: -yOffset, opacity: 1, filter: "blur(0px)" },
+    hidden: { y: yOffset, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
   };
 
   const combinedVariants = variant ?? defaultVariants;

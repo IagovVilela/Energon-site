@@ -28,17 +28,11 @@ export function TextReveal({
     return (
         <div className="overflow-hidden">
             <MotionComponent
-                initial={{
-                    y: 16,
-                    filter: "blur(2px)",
-                }}
-                whileInView={{
-                    y: 0,
-                    filter: "blur(0px)",
-                }}
+                initial={{ y: 12, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
-                    duration: 0.7,
+                    duration: 0.45,
                     delay,
                     ease: [0.25, 0.46, 0.45, 0.94],
                 }}
@@ -81,13 +75,11 @@ export function WordReveal({
     const wordVariants: Variants = {
         hidden: {
             opacity: 0,
-            y: 20,
-            filter: "blur(4px)",
+            y: 12,
         },
         visible: {
             opacity: 1,
             y: 0,
-            filter: "blur(0px)",
             transition: {
                 duration: 0.4,
                 ease: [0.25, 0.46, 0.45, 0.94],
