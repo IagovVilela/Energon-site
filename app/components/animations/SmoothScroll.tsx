@@ -18,6 +18,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       smoothWheel: true,
     });
 
+    lenis.scrollTo(0, { immediate: true });
+
     let frameId = 0;
     const raf = (time: number) => {
       lenis.raf(time);

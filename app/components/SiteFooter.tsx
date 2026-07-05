@@ -24,26 +24,26 @@ export function SiteFooter({ config }: SiteFooterProps) {
     { href: config?.instagramUrl, icon: Instagram, label: "Instagram" },
   ].filter((s) => s.href);
 
-  const marqueeItems = [
-    "Sistemas Web",
-    "ERP / CRM",
-    "SaaS",
-    "Automação",
-    "Dashboards",
-    "APIs",
-    "Alta Performance",
-  ];
+  const marqueeKeys = [
+    "footer.marquee1",
+    "footer.marquee2",
+    "footer.marquee3",
+    "footer.marquee4",
+    "footer.marquee5",
+    "footer.marquee6",
+    "footer.marquee7",
+  ] as const;
 
   return (
     <footer className="border-t border-border bg-background">
       <div className="border-b border-border/50 py-6 overflow-hidden">
         <Marquee pauseOnHover className="[--duration:30s]">
-          {marqueeItems.map((item) => (
+          {marqueeKeys.map((key) => (
             <span
-              key={item}
+              key={key}
               className="mx-8 font-display text-4xl md:text-6xl text-foreground/10 uppercase tracking-tighter whitespace-nowrap"
             >
-              {item}
+              {t(key)}
             </span>
           ))}
         </Marquee>

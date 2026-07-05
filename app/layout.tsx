@@ -19,12 +19,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Energon | Sistemas Web de Alto Nível",
-  description: "Desenvolvimento de sistemas web personalizados sob medida para empresas e pessoas. Soluções modernas, escaláveis e de alta performance.",
-  keywords: ["sistemas web", "desenvolvimento web", "sistemas personalizados", "aplicações web"],
+  title: "Energon | Soluções Digitais para o Seu Negócio",
+  description: "Sistemas e sites sob medida para aumentar vendas, visibilidade e credibilidade da sua empresa no mercado.",
+  keywords: ["sistemas sob medida", "site profissional", "aumentar vendas", "gestão de negócios", "presença digital"],
   openGraph: {
-    title: "Energon | Sistemas Web de Alto Nível",
-    description: "Desenvolvimento de sistemas web personalizados sob medida para empresas e pessoas.",
+    title: "Energon | Soluções Digitais para o Seu Negócio",
+    description: "Sistemas e sites sob medida para aumentar vendas, visibilidade e credibilidade da sua empresa.",
     type: "website",
   },
   robots: {

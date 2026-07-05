@@ -10,10 +10,10 @@ const CLIENT_LOGOS = [
   { name: "Nexus Labs", initials: "NX" },
   { name: "Voltex", initials: "VX" },
   { name: "Helix Group", initials: "HX" },
-  { name: "Prisma Tech", initials: "PR" },
+  { name: "Studio Prisma", initials: "SP" },
   { name: "Arcos Digital", initials: "AR" },
-  { name: "Pulse ERP", initials: "PL" },
-  { name: "Orbit SaaS", initials: "OR" },
+  { name: "Pulse Moda", initials: "PM" },
+  { name: "Orbit Viagens", initials: "OV" },
   { name: "Vertex", initials: "VT" },
 ];
 
@@ -38,12 +38,7 @@ export function HeroTrustBar() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 0.7 }}
-      className="mt-12 lg:mt-16 pt-8 border-t border-border/60 space-y-8"
-    >
+    <div className="mt-10 lg:mt-12 pt-8 border-t border-border/60 space-y-8">
       <div>
         <p className="editorial-label mb-4">{t("hero.clients.label")}</p>
         <Marquee pauseOnHover className="[--duration:35s]">
@@ -97,6 +92,6 @@ export function HeroTrustBar() {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

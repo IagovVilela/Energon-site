@@ -33,7 +33,7 @@ export function ServicesSection() {
   ];
 
   return (
-    <SectionTransition variant="fade">
+    <SectionTransition variant="none">
       <section id="servicos" className="section-padding border-t border-border bg-surface-elevated/30">
         <div className="container px-4 md:px-6">
           <div className="grid lg:grid-cols-12 gap-12 mb-16">

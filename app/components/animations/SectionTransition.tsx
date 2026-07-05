@@ -41,27 +41,27 @@ export function SectionTransition({
         return null;
       case "cinematic":
         return {
-          initial: { opacity: 0, scale: 0.97, filter: "blur(8px)", y: 48 },
-          whileInView: { opacity: 1, scale: 1, filter: "blur(0px)", y: 0 },
+          initial: { y: 40, filter: "blur(6px)" },
+          whileInView: { y: 0, filter: "blur(0px)" },
           transition: { duration: 0.9, delay, ease },
         };
       case "fade":
         return {
-          initial: { opacity: 0 },
+          initial: { opacity: 0.4 },
           whileInView: { opacity: 1 },
           transition: { duration: 0.7, delay, ease },
         };
       case "clipReveal":
         return {
-          initial: { opacity: 0, clipPath: "inset(0 0 100% 0)" },
-          whileInView: { opacity: 1, clipPath: "inset(0 0 0% 0)" },
+          initial: { y: 32 },
+          whileInView: { y: 0 },
           transition: { duration: 1, delay, ease },
         };
       case "slideUp":
       default:
         return {
-          initial: { opacity: 0, y: 64 },
-          whileInView: { opacity: 1, y: 0 },
+          initial: { y: 32 },
+          whileInView: { y: 0 },
           transition: { duration: 0.8, delay, ease },
         };
     }
@@ -81,7 +81,7 @@ export function SectionTransition({
       data-cinematic
       initial={motionProps.initial}
       whileInView={motionProps.whileInView}
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, amount: 0.08 }}
       transition={motionProps.transition}
       style={{ y: parallaxIntensity ? parallaxY : undefined }}
       className={className}

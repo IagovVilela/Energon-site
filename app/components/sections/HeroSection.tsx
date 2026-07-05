@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import { WordReveal } from "@/app/components/animations/TextReveal";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { Marquee } from "@/components/magicui/marquee";
 import { HeroProductMockup } from "./HeroProductMockup";
 import { HeroTrustBar } from "./HeroTrustBar";
+import { HeroOutcomeBridge } from "./HeroOutcomeBridge";
 import type { HeroProject } from "@/lib/hero-projects";
 
 interface HeroConfig {
@@ -24,64 +24,54 @@ interface HeroSectionProps {
 export function HeroSection({ config, projects = [] }: HeroSectionProps) {
   const { t } = useLanguage();
   const [showScroll, setShowScroll] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY > 80) setShowScroll(false);
-    };
+    window.scrollTo(0, 0);
+    const onScroll = () => setShowScroll(window.scrollY < 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const techItems = ["ERP", "CRM", "SaaS", "Dashboards", "APIs", "E-commerce", "Automação"];
+  const outcomeKeys = [
+    "hero.outcome1",
+    "hero.outcome2",
+    "hero.outcome3",
+    "hero.outcome4",
+    "hero.outcome5",
+    "hero.outcome6",
+    "hero.outcome7",
+  ] as const;
+
+  const fadeIn = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+      };
 
   return (
-    <section className="relative min-h-[100svh] flex flex-col grain-overlay overflow-hidden border-b border-border">
-      <div className="absolute inset-0 bg-background" />
-      <div className="absolute left-0 top-1/4 h-px w-full bg-border/60" />
-      <div className="absolute right-12 top-24 bottom-24 w-px bg-border/40 hidden lg:block" />
+    <section className="relative border-b border-border overflow-hidden isolate">
+      <div className="absolute inset-0 bg-background pointer-events-none" />
 
-      <div className="container relative z-10 px-4 md:px-6 pt-28 pb-16 md:pt-32 md:pb-20 flex-1 flex flex-col justify-center">
-        <div className="mb-10 overflow-hidden border-y border-border/50 py-3">
-          <Marquee pauseOnHover className="[--duration:25s]">
-            {techItems.map((item) => (
-              <span key={item} className="mx-6 editorial-label text-primary/70 whitespace-nowrap">
-                {item}
-              </span>
-            ))}
-          </Marquee>
-        </div>
+      <div className="container relative z-10 px-4 md:px-6 pt-24 pb-12 md:pt-28 md:pb-16">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+          <motion.div {...fadeIn}>
+            <p className="editorial-label mb-4">{t("hero.badge")}</p>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
-            <p className="editorial-label mb-6">{t("hero.badge")}</p>
-
-            <h1 className="headline-xl max-w-3xl mb-6">
-              <WordReveal text={t("hero.title.part1")} className="block" delay={0.1} immediate />
-              <span className="block text-primary mt-1">
-                <WordReveal text={t("hero.title.part2")} delay={0.25} wordDelay={0.05} immediate />
-              </span>
-              <span className="block mt-1">
-                <WordReveal text={t("hero.title.part3")} delay={0.45} immediate />
-              </span>
+            <h1 className="headline-xl max-w-3xl mb-5 text-foreground">
+              {t("hero.title.part1")}{" "}
+              <span className="text-primary">{t("hero.title.part2")}</span>{" "}
+              {t("hero.title.part3")}
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-xl text-lg text-muted-foreground mb-8 leading-relaxed"
-            >
+            <p className="max-w-xl text-lg text-muted-foreground mb-8 leading-relaxed">
               {config?.heroDescription || t("hero.subtitle")}
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Link
                 href="#contato"
                 className="group relative inline-flex h-14 items-center justify-center px-8 bg-primary text-primary-foreground font-semibold overflow-hidden"
@@ -98,8 +88,18 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
               >
                 {t("hero.viewProjects")}
               </Link>
-            </motion.div>
-          </div>
+            </div>
+
+            <div className="overflow-hidden border-y border-border/50 py-3 -mx-1">
+              <Marquee pauseOnHover className="[--duration:25s]">
+                {outcomeKeys.map((key) => (
+                  <span key={key} className="mx-5 editorial-label text-primary/80 whitespace-nowrap">
+                    {t(key)}
+                  </span>
+                ))}
+              </Marquee>
+            </div>
+          </motion.div>
 
           <HeroProductMockup projects={projects} />
         </div>
@@ -107,18 +107,13 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
         <HeroTrustBar />
       </div>
 
+      <HeroOutcomeBridge />
+
       {showScroll && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground z-10"
-        >
-          <span className="editorial-label">{t("hero.scroll")}</span>
-          <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-            <ArrowDown className="w-4 h-4" />
-          </motion.div>
-        </motion.div>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground z-10 pointer-events-none">
+          <span className="editorial-label text-[10px]">{t("hero.scroll")}</span>
+          <ArrowDown className="w-4 h-4 animate-bounce" />
+        </div>
       )}
     </section>
   );

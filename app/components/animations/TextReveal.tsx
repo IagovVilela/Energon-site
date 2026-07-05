@@ -29,16 +29,14 @@ export function TextReveal({
         <div className="overflow-hidden">
             <MotionComponent
                 initial={{
-                    y: "100%",
-                    opacity: 0,
-                    filter: "blur(4px)",
+                    y: 16,
+                    filter: "blur(2px)",
                 }}
                 whileInView={{
-                    y: "0%",
-                    opacity: 1,
+                    y: 0,
                     filter: "blur(0px)",
                 }}
-                viewport={{ once: true, margin: "-30px" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                     duration: 0.7,
                     delay,

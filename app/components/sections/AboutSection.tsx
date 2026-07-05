@@ -5,7 +5,6 @@ import { CheckCircle2, Rocket, Shield, Zap } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
 import { TextReveal } from "@/app/components/animations/TextReveal";
-import { BlurFade } from "@/components/magicui/blur-fade";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 
 interface AboutConfig {
@@ -38,8 +37,8 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
   ];
 
   return (
-    <SectionTransition variant="clipReveal">
-      <section id="sobre" className="section-padding border-t border-border">
+    <SectionTransition variant="none">
+      <section id="sobre" className="py-16 md:py-24 border-t border-border">
         <div className="container px-4 md:px-6">
           <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
             <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
@@ -58,16 +57,14 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
 
               <div className="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-border">
                 {stats.map((stat, i) => (
-                  <BlurFade key={stat.label} delay={0.1 * i}>
-                    <div>
-                      <p className="font-display text-3xl md:text-4xl text-primary">
-                        {stat.prefix}
-                        <NumberTicker value={stat.value} />
-                        {stat.suffix}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
-                    </div>
-                  </BlurFade>
+                  <div key={stat.label}>
+                    <p className="font-display text-3xl md:text-4xl text-primary">
+                      {stat.prefix}
+                      <NumberTicker value={stat.value} />
+                      {stat.suffix}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+                  </div>
                 ))}
               </div>
             </div>
@@ -77,12 +74,13 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                 <p className="editorial-label mb-8">{t("about.whatYouGet.title")}</p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {whatYouGet.map((item, i) => (
-                    <BlurFade key={i} delay={0.05 * i}>
-                      <div className="flex items-start gap-3 p-4 border border-border/60 hover:border-primary/40 transition-colors">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm">{item}</span>
-                      </div>
-                    </BlurFade>
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 p-4 border border-border/60 hover:border-primary/40 transition-colors"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <span className="text-sm">{item}</span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -93,24 +91,22 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                 </p>
                 <div className="space-y-0 divide-y divide-border border-y border-border">
                   {differentiators.map((item, i) => (
-                    <BlurFade key={item.title} delay={0.08 * i}>
-                      <div className="py-8 group">
-                        <div className="flex items-start gap-6">
-                          <span className="font-display text-4xl text-foreground/20 group-hover:text-primary transition-colors">
-                            0{i + 1}
-                          </span>
-                          <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <item.icon className="w-4 h-4 text-primary" />
-                              <h3 className="font-display text-xl">{item.title}</h3>
-                            </div>
-                            <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
-                              {item.desc}
-                            </p>
+                    <div key={item.title} className="py-8 group">
+                      <div className="flex items-start gap-6">
+                        <span className="font-display text-4xl text-foreground/20 group-hover:text-primary transition-colors">
+                          0{i + 1}
+                        </span>
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <item.icon className="w-4 h-4 text-primary" />
+                            <h3 className="font-display text-xl">{item.title}</h3>
                           </div>
+                          <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
+                            {item.desc}
+                          </p>
                         </div>
                       </div>
-                    </BlurFade>
+                    </div>
                   ))}
                 </div>
               </div>
