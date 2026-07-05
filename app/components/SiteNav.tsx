@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { useBrandJourney } from "@/app/components/brand/BrandJourneyContext";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -17,6 +18,7 @@ const navLinks = [
 
 export function SiteNav() {
   const { t, language, setLanguage } = useLanguage();
+  const { startRef, journeying, landed } = useBrandJourney();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -45,7 +47,13 @@ export function SiteNav() {
     >
       <div className="container flex items-center justify-between gap-4 min-w-0">
         <Link href="#" className="flex items-center gap-2 group shrink-0" onClick={closeMobile}>
-          <span className="w-8 h-8 bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">
+          <span
+            ref={startRef}
+            className={cn(
+              "w-8 h-8 bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center transition-opacity duration-200",
+              journeying && !landed && "lg:opacity-0"
+            )}
+          >
             E
           </span>
           <span className="font-display font-bold text-base sm:text-lg tracking-tight group-hover:text-primary transition-colors">

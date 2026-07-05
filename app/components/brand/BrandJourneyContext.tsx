@@ -82,7 +82,7 @@ function BrandScrollCompanion({
     const startEl = ctx.startRef.current;
     const endEl = ctx.endRef.current;
 
-    if (!originRef.current) {
+    if (!originRef.current || window.scrollY <= 12) {
       const start = startEl.getBoundingClientRect();
       originRef.current = {
         x: start.left + start.width / 2,
@@ -119,13 +119,14 @@ function BrandScrollCompanion({
 
     const x = origin.x + (endX - origin.x) * progress;
     const y = origin.y + (endY - origin.y) * progress;
-    const scale = 0.5 + progress * 0.5;
+    const scale = 0.42 + progress * 0.58;
 
     node.style.display = "block";
     node.style.left = `${x}px`;
     node.style.top = `${y}px`;
     node.style.transform = `translate(-50%, -50%) scale(${scale})`;
     node.style.opacity = "1";
+    node.style.zIndex = "55";
   }, [ctx, prefersReducedMotion, setJourneying, setLanded]);
 
   useEffect(() => {
@@ -163,7 +164,7 @@ function BrandScrollCompanion({
       style={{ left: 0, top: 0 }}
       aria-hidden
     >
-      <BrandMark size="md" />
+      <BrandMark size="sm" showFrames={false} />
     </div>
   );
 }

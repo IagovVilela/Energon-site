@@ -7,8 +7,6 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { Marquee } from "@/components/magicui/marquee";
-import { BrandMark } from "@/app/components/brand/BrandMark";
-import { useBrandJourney } from "@/app/components/brand/BrandJourneyContext";
 import { HeroProductMockup } from "./HeroProductMockup";
 import { HeroTrustBar } from "./HeroTrustBar";
 import type { HeroProject } from "@/lib/hero-projects";
@@ -24,7 +22,6 @@ interface HeroSectionProps {
 
 export function HeroSection({ config, projects = [] }: HeroSectionProps) {
   const { t } = useLanguage();
-  const { startRef, journeying, landed } = useBrandJourney();
   const [showScroll, setShowScroll] = useState(true);
   const prefersReducedMotion = useReducedMotion();
 
@@ -57,16 +54,6 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
   return (
     <section className="relative border-b border-border overflow-x-clip isolate">
       <div className="absolute inset-x-0 top-0 h-[min(100%,720px)] bg-background pointer-events-none -z-10" />
-
-      <div
-        ref={startRef}
-        className={`hidden lg:flex absolute top-20 left-[max(1rem,calc((100vw-1280px)/2+1rem))] z-20 transition-opacity duration-200 ${
-          journeying || landed ? "opacity-0" : "opacity-100"
-        }`}
-        aria-hidden
-      >
-        <BrandMark size="sm" />
-      </div>
 
       <div className="container relative z-10 pt-20 pb-10 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 max-w-full">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14 items-start min-w-0">
