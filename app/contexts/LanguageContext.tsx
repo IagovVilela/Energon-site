@@ -64,6 +64,9 @@ const translations = {
         'bridge.outcome4.desc': 'Sua equipe para de apagar incêndio e foca no que gera dinheiro.',
         'bridge.cta.text': 'Cada negócio é diferente. Veja abaixo como posso ajudar no seu caso.',
         'bridge.cta.link': 'Ver como posso ajudar',
+        'bridge.stat.projects': 'Projetos entregues',
+        'bridge.stat.satisfaction': 'Clientes satisfeitos',
+        'bridge.stat.response': 'Prazo de resposta',
 
         // Navigation
         'nav.about': 'Sobre',
@@ -252,6 +255,9 @@ const translations = {
         'bridge.outcome4.desc': 'Your team stops firefighting and focuses on what makes money.',
         'bridge.cta.text': 'Every business is different. See below how I can help in your case.',
         'bridge.cta.link': 'See how I can help',
+        'bridge.stat.projects': 'Projects delivered',
+        'bridge.stat.satisfaction': 'Satisfied clients',
+        'bridge.stat.response': 'Response time',
 
         // Navigation
         'nav.about': 'About',

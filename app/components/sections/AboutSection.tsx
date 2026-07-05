@@ -38,7 +38,7 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
 
   return (
     <SectionTransition variant="none">
-      <section id="sobre" className="py-16 md:py-24 border-t border-border">
+      <section id="sobre" className="py-14 md:py-20 border-t border-border">
         <div className="container px-4 md:px-6">
           <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
             <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">

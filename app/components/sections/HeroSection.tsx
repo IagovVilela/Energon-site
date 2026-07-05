@@ -9,7 +9,6 @@ import { BorderBeam } from "@/components/magicui/border-beam";
 import { Marquee } from "@/components/magicui/marquee";
 import { HeroProductMockup } from "./HeroProductMockup";
 import { HeroTrustBar } from "./HeroTrustBar";
-import { HeroOutcomeBridge } from "./HeroOutcomeBridge";
 import type { HeroProject } from "@/lib/hero-projects";
 
 interface HeroConfig {
@@ -54,7 +53,7 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
 
   return (
     <section className="relative border-b border-border overflow-hidden isolate">
-      <div className="absolute inset-0 bg-background pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-[min(100%,720px)] bg-background pointer-events-none -z-10" />
 
       <div className="container relative z-10 px-4 md:px-6 pt-24 pb-12 md:pt-28 md:pb-16">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
@@ -106,8 +105,6 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
 
         <HeroTrustBar />
       </div>
-
-      <HeroOutcomeBridge />
 
       {showScroll && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground z-10 pointer-events-none">

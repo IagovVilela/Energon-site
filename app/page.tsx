@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { HeroSection } from "./components/sections/HeroSection";
+import { HeroOutcomeBridge } from "./components/sections/HeroOutcomeBridge";
 import { AboutSection } from "./components/sections/AboutSection";
 import { ServicesSection } from "./components/sections/ServicesSection";
 import { PortfolioSection } from "./components/sections/PortfolioSection";
@@ -44,6 +45,7 @@ export default async function Home() {
       <CinematicPage>
         <SiteNav />
         <HeroSection config={config} projects={projects} />
+        <HeroOutcomeBridge />
         <AboutSection config={config} />
         <ServicesSection />
         <PortfolioSection initialProjects={projects} />
