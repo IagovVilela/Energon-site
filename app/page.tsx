@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { HeroSection } from "./components/sections/HeroSection";
+import { HeroShowcaseSection } from "./components/sections/HeroShowcaseSection";
+import { HeroSocialProofSection } from "./components/sections/HeroSocialProofSection";
 import { HeroOutcomeBridge } from "./components/sections/HeroOutcomeBridge";
 import { AboutSection } from "./components/sections/AboutSection";
 import { ServicesSection } from "./components/sections/ServicesSection";
@@ -44,7 +46,9 @@ export default async function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/30 selection:text-primary-foreground overflow-x-hidden">
       <CinematicPage>
         <SiteNav />
-        <HeroSection config={config} projects={projects} />
+        <HeroSection config={config} />
+        <HeroShowcaseSection projects={projects} />
+        <HeroSocialProofSection />
         <HeroOutcomeBridge />
         <AboutSection config={config} />
         <ServicesSection />
