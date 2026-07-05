@@ -117,6 +117,9 @@ const translations = {
         'about.cta.title': 'Pronto para transformar sua ideia em realidade?',
         'about.cta.subtitle': 'Vamos conversar sobre seu projeto sem compromisso',
         'about.cta.button': 'Solicitar Orçamento Gratuito',
+        'about.brand.label': 'Marca',
+        'about.brand.tagline': 'Soluções digitais que crescem com o seu negócio',
+        'about.brand.since': 'Desde 2024',
 
         // Services Section
         'services.title.prefix': 'Como posso',
@@ -308,6 +311,9 @@ const translations = {
         'about.cta.title': 'Ready to turn your idea into reality?',
         'about.cta.subtitle': "Let's talk about your project without commitment",
         'about.cta.button': 'Request Free Quote',
+        'about.brand.label': 'Brand',
+        'about.brand.tagline': 'Digital solutions that grow with your business',
+        'about.brand.since': 'Since 2024',
 
         // Services Section
         'services.title.prefix': 'How I can',
