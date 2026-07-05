@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { BorderBeam } from "@/components/magicui/border-beam";
+import { HeroProductMockup } from "./HeroProductMockup";
+import type { HeroProject } from "@/lib/hero-projects";
 
 interface HeroConfig {
   heroDescription?: string;
@@ -13,9 +15,10 @@ interface HeroConfig {
 
 interface HeroSectionProps {
   config?: HeroConfig | null;
+  projects?: HeroProject[];
 }
 
-export function HeroSection({ config }: HeroSectionProps) {
+export function HeroSection({ config, projects = [] }: HeroSectionProps) {
   const { t } = useLanguage();
   const [showScroll, setShowScroll] = useState(true);
   const prefersReducedMotion = useReducedMotion();
@@ -45,10 +48,10 @@ export function HeroSection({ config }: HeroSectionProps) {
           backgroundSize: "40px 40px",
         }}
       />
-      <div className="absolute top-0 right-0 w-1/3 h-full max-h-[480px] bg-gradient-to-l from-primary/5 to-transparent pointer-events-none -z-10 hidden lg:block" />
 
       <div className="container relative z-10 pt-20 pb-16 sm:pt-24 sm:pb-20 md:pt-28 md:pb-24 max-w-full">
-        <motion.div {...fadeIn} className="min-w-0 w-full max-w-3xl">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 xl:gap-16 items-center min-w-0">
+          <motion.div {...fadeIn} className="min-w-0 w-full max-w-3xl lg:max-w-none">
             <p className="editorial-label mb-3 sm:mb-4">{t("hero.badge")}</p>
 
             <h1 className="headline-xl w-full max-w-full mb-4 sm:mb-5 text-foreground break-words [overflow-wrap:anywhere]">
@@ -79,7 +82,16 @@ export function HeroSection({ config }: HeroSectionProps) {
                 {t("hero.viewProjects")} →
               </Link>
             </div>
-        </motion.div>
+          </motion.div>
+
+          <motion.div
+            {...fadeIn}
+            transition={{ ...fadeIn.transition, delay: 0.15 }}
+            className="hidden lg:block min-w-0 w-full"
+          >
+            <HeroProductMockup projects={projects} compact />
+          </motion.div>
+        </div>
       </div>
 
       {showScroll && (

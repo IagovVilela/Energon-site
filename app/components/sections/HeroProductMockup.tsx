@@ -37,7 +37,13 @@ function SlideImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
+export function HeroProductMockup({
+  projects,
+  compact = false,
+}: {
+  projects: HeroProject[];
+  compact?: boolean;
+}) {
   const { t } = useLanguage();
   const slides = getHeroProjectSlides(projects);
   const [index, setIndex] = useState(0);
@@ -195,6 +201,7 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
             ))}
           </div>
 
+          {!compact && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -219,6 +226,7 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
               </button>
             ))}
           </motion.div>
+          )}
         </>
       )}
     </div>

@@ -11,7 +11,7 @@ export function HeroShowcaseSection({ projects = [] }: { projects?: HeroProject[
   const { t } = useLanguage();
 
   return (
-    <SectionShell id="destaques" tone="muted" labelledBy="destaques-heading">
+    <SectionShell id="destaques" tone="muted" labelledBy="destaques-heading" className="lg:hidden">
       <SectionHeader
         label={t("hero.showcase.label")}
         title={<span id="destaques-heading">{t("hero.showcase.title")}</span>}

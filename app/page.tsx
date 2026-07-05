@@ -46,7 +46,7 @@ export default async function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/30 selection:text-primary-foreground overflow-x-hidden">
       <CinematicPage>
         <SiteNav />
-        <HeroSection config={config} />
+        <HeroSection config={config} projects={projects} />
         <HeroShowcaseSection projects={projects} />
         <HeroSocialProofSection />
         <HeroOutcomeBridge />
