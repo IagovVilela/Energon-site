@@ -11,9 +11,9 @@ export function CTASection() {
 
   return (
     <SectionTransition variant="none">
-      <section className="section-padding border-t border-border relative overflow-hidden">
+      <section className="section-padding border-t border-border bg-surface-elevated/40 relative overflow-hidden">
         <div className="container">
-          <div className="relative border border-border p-6 sm:p-12 md:p-20 lg:p-28 overflow-hidden">
+          <div className="relative border border-border bg-background p-6 sm:p-12 md:p-20 lg:p-28 overflow-hidden shadow-sm">
             <BorderBeam size={250} duration={12} />
 
             <p className="editorial-label mb-4 sm:mb-8">{t("cta.badge")}</p>

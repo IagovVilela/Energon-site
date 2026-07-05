@@ -116,7 +116,11 @@ html.lenis, html.lenis body {
   }
 
   .section-padding {
-    @apply py-14 md:py-24 lg:py-32;
+    @apply py-16 md:py-24 lg:py-28;
+  }
+
+  .section-inset {
+    @apply border border-border bg-card/25 p-5 sm:p-8 md:p-10;
   }
 
   .grain-overlay {

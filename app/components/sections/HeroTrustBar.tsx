@@ -38,7 +38,7 @@ export function HeroTrustBar() {
   };
 
   return (
-    <div className="mt-8 sm:mt-10 lg:mt-12 pt-6 sm:pt-8 border-t border-border/60 space-y-6 sm:space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
         <p className="editorial-label mb-4">{t("hero.clients.label")}</p>
         <Marquee pauseOnHover className="[--duration:35s]">

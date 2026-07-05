@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
-import { TextReveal } from "@/app/components/animations/TextReveal";
+import { SectionHeader, SectionShell } from "@/app/components/layout/SectionShell";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { cn } from "@/lib/utils";
 
@@ -88,23 +88,22 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
 
   return (
     <SectionTransition variant="fade">
-      <section id="portfolio" className="section-padding border-t border-border">
-        <div className="container">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 sm:gap-8 mb-10 sm:mb-16">
-            <div>
-              <p className="editorial-label mb-6">03 — {t("nav.portfolio")}</p>
-              <TextReveal>
-                <h2 className="headline-lg">
-                  {t("portfolio.title.prefix")}{" "}
-                  <span className="text-primary">{t("portfolio.title.highlight")}</span>
-                </h2>
-              </TextReveal>
-              <TextReveal delay={0.1}>
-                <p className="text-muted-foreground mt-4 max-w-lg">{t("portfolio.subtitle")}</p>
-              </TextReveal>
-            </div>
+      <SectionShell id="portfolio" tone="muted" labelledBy="portfolio-heading">
+        <SectionHeader
+          index="03"
+          align="split"
+          label={t("nav.portfolio")}
+          title={
+            <span id="portfolio-heading">
+              {t("portfolio.title.prefix")}{" "}
+              <span className="text-primary">{t("portfolio.title.highlight")}</span>
+            </span>
+          }
+          subtitle={t("portfolio.subtitle")}
+          className="max-w-none"
+        />
 
-            <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-8 sm:mb-10 pb-6 border-b border-border/60">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -120,10 +119,9 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                   {cat === "All" ? t("portfolio.filterAll") : cat}
                 </button>
               ))}
-            </div>
-          </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => {
                 const isFeatured = index === 0;
@@ -191,7 +189,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
               })}
             </AnimatePresence>
           </div>
-        </div>
+      </SectionShell>
 
         <AnimatePresence>
           {selectedProject && (
@@ -288,7 +286,6 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
             </div>
           )}
         </AnimatePresence>
-      </section>
     </SectionTransition>
   );
 }

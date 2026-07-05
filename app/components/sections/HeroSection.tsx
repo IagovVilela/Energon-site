@@ -6,10 +6,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { BorderBeam } from "@/components/magicui/border-beam";
-import { Marquee } from "@/components/magicui/marquee";
-import { HeroProductMockup } from "./HeroProductMockup";
-import { HeroTrustBar } from "./HeroTrustBar";
-import type { HeroProject } from "@/lib/hero-projects";
 
 interface HeroConfig {
   heroDescription?: string;
@@ -17,10 +13,9 @@ interface HeroConfig {
 
 interface HeroSectionProps {
   config?: HeroConfig | null;
-  projects?: HeroProject[];
 }
 
-export function HeroSection({ config, projects = [] }: HeroSectionProps) {
+export function HeroSection({ config }: HeroSectionProps) {
   const { t } = useLanguage();
   const [showScroll, setShowScroll] = useState(true);
   const prefersReducedMotion = useReducedMotion();
@@ -33,16 +28,6 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const outcomeKeys = [
-    "hero.outcome1",
-    "hero.outcome2",
-    "hero.outcome3",
-    "hero.outcome4",
-    "hero.outcome5",
-    "hero.outcome6",
-    "hero.outcome7",
-  ] as const;
-
   const fadeIn = prefersReducedMotion
     ? {}
     : {
@@ -52,69 +37,53 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
       };
 
   return (
-    <section className="relative border-b border-border overflow-x-clip isolate">
-      <div className="absolute inset-x-0 top-0 h-[min(100%,720px)] bg-background pointer-events-none -z-10" />
+    <section className="relative bg-background border-b border-border overflow-x-clip isolate min-h-[85svh] lg:min-h-[70svh] flex flex-col">
+      <div
+        className="absolute inset-0 opacity-30 pointer-events-none -z-10"
+        style={{
+          backgroundImage: "url(/grid.svg)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none -z-10 hidden lg:block" />
 
-      <div className="container relative z-10 pt-20 pb-10 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 max-w-full">
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14 items-start min-w-0">
-          <div className="min-w-0 w-full max-w-full">
-            <motion.div {...fadeIn} className="min-w-0 w-full">
-              <p className="editorial-label mb-3 sm:mb-4">{t("hero.badge")}</p>
+      <div className="container relative z-10 flex-1 flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-14 md:pt-28 md:pb-16 max-w-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center min-w-0 max-w-4xl lg:max-w-none">
+          <motion.div {...fadeIn} className="min-w-0 w-full">
+            <p className="editorial-label mb-3 sm:mb-4">{t("hero.badge")}</p>
 
-              <h1 className="headline-xl w-full max-w-full mb-4 sm:mb-5 text-foreground break-words [overflow-wrap:anywhere]">
-                {t("hero.title.part1")}{" "}
-                <span className="text-primary">{t("hero.title.part2")}</span>{" "}
-                {t("hero.title.part3")}
-              </h1>
+            <h1 className="headline-xl w-full max-w-full mb-4 sm:mb-5 text-foreground break-words [overflow-wrap:anywhere]">
+              {t("hero.title.part1")}{" "}
+              <span className="text-primary">{t("hero.title.part2")}</span>{" "}
+              {t("hero.title.part3")}
+            </h1>
 
-              <p className="w-full max-w-full text-base sm:text-lg text-muted-foreground mb-5 sm:mb-6 leading-relaxed break-words [overflow-wrap:anywhere]">
-                {config?.heroDescription || t("hero.subtitle")}
-              </p>
-            </motion.div>
+            <p className="w-full max-w-full text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed break-words [overflow-wrap:anywhere]">
+              {config?.heroDescription || t("hero.subtitle")}
+            </p>
 
-            {/* Mockup logo abaixo do título no celular */}
-            <div className="lg:hidden mb-5 sm:mb-6 min-w-0 w-full">
-              <HeroProductMockup projects={projects} />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+              <Link
+                href="#contato"
+                className="group relative inline-flex h-12 sm:h-14 w-full sm:w-auto sm:min-w-[12rem] items-center justify-center px-6 sm:px-8 bg-primary text-primary-foreground font-semibold overflow-hidden text-sm sm:text-base"
+              >
+                <BorderBeam size={120} duration={8} />
+                <span className="relative z-10 flex items-center gap-2">
+                  {t("hero.cta")}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
+                </span>
+              </Link>
+              <Link
+                href="#portfolio"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors text-center sm:text-left"
+              >
+                {t("hero.viewProjects")} →
+              </Link>
             </div>
+          </motion.div>
 
-            <motion.div {...fadeIn} className="min-w-0 w-full">
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-5 sm:mb-6">
-                <Link
-                  href="#contato"
-                  className="group relative inline-flex h-12 sm:h-14 w-full sm:w-auto sm:min-w-[12rem] items-center justify-center px-6 sm:px-8 bg-primary text-primary-foreground font-semibold overflow-hidden text-sm sm:text-base"
-                >
-                  <BorderBeam size={120} duration={8} />
-                  <span className="relative z-10 flex items-center gap-2">
-                    {t("hero.cta")}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
-                  </span>
-                </Link>
-                <Link
-                  href="#portfolio"
-                  className="inline-flex h-12 sm:h-14 w-full sm:w-auto sm:min-w-[12rem] items-center justify-center px-6 sm:px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors text-sm sm:text-base"
-                >
-                  {t("hero.viewProjects")}
-                </Link>
-              </div>
-
-              <div className="w-full overflow-hidden border-y border-border/50 py-3">
-                <Marquee pauseOnHover className="[--duration:25s] max-w-full">
-                  {outcomeKeys.map((key) => (
-                    <span key={key} className="mx-4 sm:mx-5 editorial-label text-primary/80 whitespace-nowrap">
-                      {t(key)}
-                    </span>
-                  ))}
-                </Marquee>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="hidden lg:block min-w-0 w-full">
-            <HeroProductMockup projects={projects} />
-          </div>
+          <div className="hidden lg:block relative min-h-[280px] rounded-sm border border-border/40 bg-gradient-to-br from-primary/5 via-transparent to-transparent" aria-hidden />
         </div>
-
-        <HeroTrustBar />
       </div>
 
       {showScroll && (

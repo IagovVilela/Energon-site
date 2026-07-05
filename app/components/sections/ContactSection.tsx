@@ -7,7 +7,7 @@ import { siteConfig } from "@/app/config/site";
 import { sendContactEmail } from "@/app/actions/contact";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
-import { TextReveal } from "@/app/components/animations/TextReveal";
+import { SectionHeader, SectionShell } from "@/app/components/layout/SectionShell";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,17 +45,16 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
 
   return (
     <SectionTransition variant="slideUp">
-      <section id="contato" className="section-padding border-t border-border">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-24">
-            <div>
-              <p className="editorial-label mb-6">05 — {t("nav.contact")}</p>
-              <TextReveal>
-                <h2 className="headline-lg mb-6">{t("contact.title")}</h2>
-              </TextReveal>
-              <TextReveal delay={0.1}>
-                <p className="text-muted-foreground text-lg mb-12">{t("contact.subtitle")}</p>
-              </TextReveal>
+      <SectionShell id="contato" tone="muted" labelledBy="contato-heading">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-24">
+          <div>
+            <SectionHeader
+              index="05"
+              label={t("nav.contact")}
+              title={<span id="contato-heading">{t("contact.title")}</span>}
+              subtitle={t("contact.subtitle")}
+              className="mb-8 sm:mb-10"
+            />
 
               <div className="space-y-8">
                 <BlurFade>
@@ -89,6 +88,7 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
               </div>
             </div>
 
+          <div>
             <BlurFade delay={0.15}>
               <form action={handleSubmit} className="border border-border p-5 sm:p-8 md:p-10 space-y-5 sm:space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -140,7 +140,7 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
             </BlurFade>
           </div>
         </div>
-      </section>
+      </SectionShell>
     </SectionTransition>
   );
 }

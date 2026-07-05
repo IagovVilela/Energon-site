@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { SectionTransition } from "@/app/components/animations/SectionTransition";
-import { TextReveal } from "@/app/components/animations/TextReveal";
+import { SectionHeader, SectionShell } from "@/app/components/layout/SectionShell";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { cn } from "@/lib/utils";
 
@@ -34,26 +34,22 @@ export function ServicesSection() {
 
   return (
     <SectionTransition variant="none">
-      <section id="servicos" className="section-padding border-t border-border bg-surface-elevated/30">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-8 sm:gap-12 mb-10 sm:mb-16">
-            <div className="lg:col-span-5">
-              <p className="editorial-label mb-6">02 — {t("nav.services")}</p>
-              <TextReveal>
-                <h2 className="headline-lg">
-                  {t("services.title.prefix")}{" "}
-                  <span className="text-primary">{t("services.title.highlight")}</span>
-                </h2>
-              </TextReveal>
-            </div>
-            <div className="lg:col-span-7 flex items-end">
-              <TextReveal delay={0.1}>
-                <p className="text-muted-foreground text-lg">{t("services.subtitle")}</p>
-              </TextReveal>
-            </div>
-          </div>
+      <SectionShell id="servicos" tone="default" labelledBy="servicos-heading">
+        <SectionHeader
+          index="02"
+          align="split"
+          label={t("nav.services")}
+          title={
+            <span id="servicos-heading">
+              {t("services.title.prefix")}{" "}
+              <span className="text-primary">{t("services.title.highlight")}</span>
+            </span>
+          }
+          subtitle={t("services.subtitle")}
+          className="max-w-none"
+        />
 
-          <div className="border-t border-border">
+        <div className="section-inset border-t-0 pt-0">
             {services.map((service, index) => {
               const Icon = iconMap[index];
               const isOpen = openIndex === index;
@@ -97,9 +93,8 @@ export function ServicesSection() {
                 </BlurFade>
               );
             })}
-          </div>
         </div>
-      </section>
+      </SectionShell>
     </SectionTransition>
   );
 }

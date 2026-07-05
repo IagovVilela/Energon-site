@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -13,6 +13,8 @@ import {
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { getHeroProjectSlides, type HeroProject } from "@/lib/hero-projects";
 import { cn } from "@/lib/utils";
+
+const AUTO_PLAY_MS = 4500;
 
 function SlideImage({ src, alt }: { src: string; alt: string }) {
   const isRemote = src.startsWith("http");
@@ -53,13 +55,17 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
     damping: 26,
   });
 
+  const goToSlide = useCallback((i: number) => {
+    setIndex(i);
+  }, []);
+
   useEffect(() => {
-    if (slides.length <= 1) return;
+    if (slides.length <= 1 || prefersReducedMotion) return;
     const timer = setInterval(() => {
       setIndex((current) => (current + 1) % slides.length);
-    }, 4500);
+    }, AUTO_PLAY_MS);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, prefersReducedMotion, index]);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return;
@@ -81,9 +87,8 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
       ref={containerRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetTilt}
-      className="relative w-full max-w-xl mx-auto lg:mx-0 lg:ml-auto min-w-0"
+      className="relative w-full max-w-xl mx-auto min-w-0"
     >
-      {/* Clip 3D overflow — prevents scroll gap bug */}
       <div className="relative overflow-hidden py-2 [perspective:1400px]">
         <div className="absolute -inset-4 bg-primary/12 blur-3xl rounded-full pointer-events-none" />
 
@@ -104,84 +109,117 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
             }
             className="relative"
           >
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="relative border border-border bg-card shadow-2xl shadow-black/30"
-            style={prefersReducedMotion ? undefined : { transform: "translateZ(36px)" }}
-          >
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 border-b border-border bg-surface-elevated/80">
-              <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
-              <span className="w-2 h-2 rounded-full bg-border shrink-0" />
-              <span className="w-2 h-2 rounded-full bg-border shrink-0" />
-              <span className="ml-auto editorial-label text-[10px] truncate max-w-[50%]">
-                {active?.title ?? t("hero.visual.label")}
-              </span>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="relative border border-border bg-card shadow-2xl shadow-black/30"
+              style={prefersReducedMotion ? undefined : { transform: "translateZ(36px)" }}
+            >
+              <div className="flex items-center gap-1 px-3 sm:px-4 py-2 sm:py-2.5 border-b border-border bg-surface-elevated/80 min-w-0">
+                {slides.length > 1 &&
+                  slides.map((slide, i) => (
+                    <button
+                      key={slide.id}
+                      type="button"
+                      onClick={() => goToSlide(i)}
+                      className={cn(
+                        "rounded-full shrink-0 transition-colors",
+                        slides.length > 6 ? "w-1.5 h-1.5" : "w-2 h-2",
+                        i === index ? "bg-primary" : "bg-border hover:bg-muted-foreground/40"
+                      )}
+                      aria-label={slide.title}
+                      aria-current={i === index ? "true" : undefined}
+                    />
+                  ))}
+                <span className="ml-auto editorial-label text-[10px] truncate max-w-[50%]">
+                  {active?.title ?? t("hero.visual.label")}
+                </span>
+              </div>
 
-            <div className="relative aspect-[16/10] bg-background overflow-hidden">
-              <AnimatePresence mode="wait">
-                {active ? (
-                  <motion.div
-                    key={active.id}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute inset-0"
-                  >
-                    <SlideImage src={active.imageUrl} alt={active.title} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent pointer-events-none" />
-                  </motion.div>
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated p-6">
-                    <div className="w-full space-y-3">
-                      <div className="h-3 bg-border rounded-full w-2/3" />
-                      <div className="h-3 bg-border rounded-full w-full" />
-                      <div className="h-20 border border-border bg-background/50 mt-2" />
+              <div className="relative aspect-[16/10] bg-background overflow-hidden">
+                <AnimatePresence mode="wait">
+                  {active ? (
+                    <motion.div
+                      key={active.id}
+                      initial={{ opacity: 0, scale: 1.05 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute inset-0"
+                    >
+                      <SlideImage src={active.imageUrl} alt={active.title} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent pointer-events-none" />
+                    </motion.div>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated p-6">
+                      <div className="w-full space-y-3">
+                        <div className="h-3 bg-border rounded-full w-2/3" />
+                        <div className="h-3 bg-border rounded-full w-full" />
+                        <div className="h-20 border border-border bg-background/50 mt-2" />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
 
-          {/* Laptop base — flat (no rotateX 75deg) to avoid page overflow */}
-          <div
-            className="mx-auto mt-1.5 w-[90%] h-2.5 rounded-b-md bg-gradient-to-b from-border to-muted/80 border-x border-border"
-            style={prefersReducedMotion ? undefined : { transform: "translateZ(18px)" }}
-          />
-          <div
-            className="mx-auto w-[96%] h-1.5 rounded-b bg-muted/50"
-            style={prefersReducedMotion ? undefined : { transform: "translateZ(8px)" }}
-          />
-        </motion.div>
+            <div
+              className="mx-auto mt-1.5 w-[90%] h-2.5 rounded-b-md bg-gradient-to-b from-border to-muted/80 border-x border-border"
+              style={prefersReducedMotion ? undefined : { transform: "translateZ(18px)" }}
+            />
+            <div
+              className="mx-auto w-[96%] h-1.5 rounded-b bg-muted/50"
+              style={prefersReducedMotion ? undefined : { transform: "translateZ(8px)" }}
+            />
+          </motion.div>
         </motion.div>
       </div>
 
       {slides.length > 1 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mt-4 flex gap-2 overflow-x-auto pb-1 max-w-full"
-        >
-          {slides.map((slide, i) => (
-            <button
-              key={slide.id}
-              type="button"
-              onClick={() => setIndex(i)}
-              className={cn(
-                "relative shrink-0 w-14 h-9 sm:w-16 sm:h-10 border overflow-hidden transition-colors",
-                i === index ? "border-primary" : "border-border opacity-60 hover:opacity-100"
-              )}
-              aria-label={slide.title}
-            >
-              <SlideImage src={slide.imageUrl} alt={slide.title} />
-            </button>
-          ))}
-        </motion.div>
+        <>
+          <div className="mt-4 flex justify-center gap-2" role="tablist" aria-label={t("hero.carousel.nav")}>
+            {slides.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                role="tab"
+                onClick={() => goToSlide(i)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all",
+                  i === index ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-muted-foreground/50"
+                )}
+                aria-label={slide.title}
+                aria-selected={i === index}
+              />
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="mt-4 flex gap-2 overflow-x-auto pb-1 max-w-full"
+          >
+            {slides.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => goToSlide(i)}
+                className={cn(
+                  "relative shrink-0 w-14 h-9 sm:w-16 sm:h-10 border overflow-hidden transition-all",
+                  i === index
+                    ? "border-primary ring-2 ring-primary/30 scale-105"
+                    : "border-border opacity-60 hover:opacity-100"
+                )}
+                aria-label={slide.title}
+                aria-current={i === index ? "true" : undefined}
+              >
+                <SlideImage src={slide.imageUrl} alt={slide.title} />
+              </button>
+            ))}
+          </motion.div>
+        </>
       )}
     </div>
   );
