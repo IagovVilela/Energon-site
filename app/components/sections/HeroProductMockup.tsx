@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  AnimatePresence,
+  useReducedMotion,
+} from "framer-motion";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { getHeroProjectSlides, type HeroProject } from "@/lib/hero-projects";
 import { cn } from "@/lib/utils";
@@ -32,9 +39,19 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
   const { t } = useLanguage();
   const slides = getHeroProjectSlides(projects);
   const [index, setIndex] = useState(0);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [8, -8]), {
+    stiffness: 120,
+    damping: 20,
+  });
+  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-14, 14]), {
+    stiffness: 120,
+    damping: 20,
+  });
 
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -44,13 +61,17 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return;
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -6;
-    setTilt({ x, y });
+    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const resetTilt = () => {
+    pointerX.set(0);
+    pointerY.set(0);
   };
 
   const active = slides[index];
@@ -58,69 +79,101 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
   return (
     <div
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetTilt}
       className="relative w-full max-w-xl mx-auto lg:mx-0 lg:ml-auto min-w-0"
     >
-      <div className="absolute -inset-4 bg-primary/10 blur-3xl rounded-full pointer-events-none" />
+      {/* Clip 3D overflow — prevents scroll gap bug */}
+      <div className="relative overflow-hidden py-2 [perspective:1400px]">
+        <div className="absolute -inset-4 bg-primary/12 blur-3xl rounded-full pointer-events-none" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="relative overflow-hidden"
-        style={{ transform: prefersReducedMotion ? undefined : `rotateY(${tilt.x}deg)` }}
-      >
-        <div className="relative border border-border bg-card shadow-xl">
-          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border bg-surface-elevated/80">
-            <span className="w-2 h-2 rounded-full bg-primary" />
-            <span className="w-2 h-2 rounded-full bg-border" />
-            <span className="w-2 h-2 rounded-full bg-border" />
-            <span className="ml-auto editorial-label text-[10px] truncate max-w-[55%]">
-              {active?.title ?? t("hero.visual.label")}
-            </span>
-          </div>
+        <motion.div
+          animate={prefersReducedMotion ? undefined : { y: [0, -6, 0] }}
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { y: { duration: 5, repeat: Infinity, ease: "easeInOut" } }
+          }
+          className="relative"
+        >
+          <motion.div
+            style={
+              prefersReducedMotion
+                ? undefined
+                : { rotateX, rotateY, transformStyle: "preserve-3d" }
+            }
+            className="relative will-change-transform"
+          >
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="relative border border-border bg-card shadow-2xl shadow-black/30"
+            style={prefersReducedMotion ? undefined : { transform: "translateZ(36px)" }}
+          >
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 border-b border-border bg-surface-elevated/80">
+              <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-border shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-border shrink-0" />
+              <span className="ml-auto editorial-label text-[10px] truncate max-w-[50%]">
+                {active?.title ?? t("hero.visual.label")}
+              </span>
+            </div>
 
-          <div className="relative aspect-[16/10] bg-muted overflow-hidden">
-            <AnimatePresence mode="wait">
-              {active ? (
-                <motion.div
-                  key={active.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="absolute inset-0"
-                >
-                  <SlideImage src={active.imageUrl} alt={active.title} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent pointer-events-none" />
-                </motion.div>
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated p-6">
-                  <div className="w-full space-y-3">
-                    <div className="h-3 bg-border rounded-full w-2/3" />
-                    <div className="h-3 bg-border rounded-full w-full" />
-                    <div className="h-20 border border-border bg-background/50 mt-2" />
+            <div className="relative aspect-[16/10] bg-background overflow-hidden">
+              <AnimatePresence mode="wait">
+                {active ? (
+                  <motion.div
+                    key={active.id}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <SlideImage src={active.imageUrl} alt={active.title} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent pointer-events-none" />
+                  </motion.div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated p-6">
+                    <div className="w-full space-y-3">
+                      <div className="h-3 bg-border rounded-full w-2/3" />
+                      <div className="h-3 bg-border rounded-full w-full" />
+                      <div className="h-20 border border-border bg-background/50 mt-2" />
+                    </div>
                   </div>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
 
-        <div className="mx-auto mt-1 h-2.5 w-[88%] rounded-b-md bg-gradient-to-b from-border to-muted/80" />
-        <div className="mx-auto h-1.5 w-[96%] rounded-b bg-muted/60" />
-      </motion.div>
+          {/* Laptop base — flat (no rotateX 75deg) to avoid page overflow */}
+          <div
+            className="mx-auto mt-1.5 w-[90%] h-2.5 rounded-b-md bg-gradient-to-b from-border to-muted/80 border-x border-border"
+            style={prefersReducedMotion ? undefined : { transform: "translateZ(18px)" }}
+          />
+          <div
+            className="mx-auto w-[96%] h-1.5 rounded-b bg-muted/50"
+            style={prefersReducedMotion ? undefined : { transform: "translateZ(8px)" }}
+          />
+        </motion.div>
+        </motion.div>
+      </div>
 
       {slides.length > 1 && (
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="mt-4 flex gap-2 overflow-x-auto pb-1 max-w-full"
+        >
           {slides.map((slide, i) => (
             <button
               key={slide.id}
               type="button"
               onClick={() => setIndex(i)}
               className={cn(
-                "relative shrink-0 w-14 h-9 border overflow-hidden transition-colors",
+                "relative shrink-0 w-14 h-9 sm:w-16 sm:h-10 border overflow-hidden transition-colors",
                 i === index ? "border-primary" : "border-border opacity-60 hover:opacity-100"
               )}
               aria-label={slide.title}
@@ -128,7 +181,7 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
               <SlideImage src={slide.imageUrl} alt={slide.title} />
             </button>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

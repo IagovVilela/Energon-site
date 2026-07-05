@@ -52,55 +52,66 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
       };
 
   return (
-    <section className="relative border-b border-border overflow-hidden isolate">
+    <section className="relative border-b border-border overflow-x-clip isolate">
       <div className="absolute inset-x-0 top-0 h-[min(100%,720px)] bg-background pointer-events-none -z-10" />
 
-      <div className="container relative z-10 pt-20 pb-10 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-start">
-          <motion.div {...fadeIn}>
-            <p className="editorial-label mb-4">{t("hero.badge")}</p>
+      <div className="container relative z-10 pt-20 pb-10 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 max-w-full">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14 items-start min-w-0">
+          <div className="min-w-0 w-full max-w-full">
+            <motion.div {...fadeIn} className="min-w-0 w-full">
+              <p className="editorial-label mb-3 sm:mb-4">{t("hero.badge")}</p>
 
-            <h1 className="headline-xl max-w-3xl mb-5 text-foreground">
-              {t("hero.title.part1")}{" "}
-              <span className="text-primary">{t("hero.title.part2")}</span>{" "}
-              {t("hero.title.part3")}
-            </h1>
+              <h1 className="headline-xl w-full max-w-full mb-4 sm:mb-5 text-foreground break-words [overflow-wrap:anywhere]">
+                {t("hero.title.part1")}{" "}
+                <span className="text-primary">{t("hero.title.part2")}</span>{" "}
+                {t("hero.title.part3")}
+              </h1>
 
-            <p className="max-w-xl text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-              {config?.heroDescription || t("hero.subtitle")}
-            </p>
+              <p className="w-full max-w-full text-base sm:text-lg text-muted-foreground mb-5 sm:mb-6 leading-relaxed break-words [overflow-wrap:anywhere]">
+                {config?.heroDescription || t("hero.subtitle")}
+              </p>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <Link
-                href="#contato"
-                className="group relative inline-flex h-12 sm:h-14 w-full sm:w-auto items-center justify-center px-6 sm:px-8 bg-primary text-primary-foreground font-semibold overflow-hidden"
-              >
-                <BorderBeam size={120} duration={8} />
-                <span className="relative z-10 flex items-center gap-2">
-                  {t("hero.cta")}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-              <Link
-                href="#portfolio"
-                className="inline-flex h-12 sm:h-14 w-full sm:w-auto items-center justify-center px-6 sm:px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors"
-              >
-                {t("hero.viewProjects")}
-              </Link>
+            {/* Mockup logo abaixo do título no celular */}
+            <div className="lg:hidden mb-5 sm:mb-6 min-w-0 w-full">
+              <HeroProductMockup projects={projects} />
             </div>
 
-            <div className="overflow-hidden border-y border-border/50 py-3 -mx-1">
-              <Marquee pauseOnHover className="[--duration:25s]">
-                {outcomeKeys.map((key) => (
-                  <span key={key} className="mx-5 editorial-label text-primary/80 whitespace-nowrap">
-                    {t(key)}
+            <motion.div {...fadeIn} className="min-w-0 w-full">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-5 sm:mb-6">
+                <Link
+                  href="#contato"
+                  className="group relative inline-flex h-12 sm:h-14 w-full sm:w-auto sm:min-w-[12rem] items-center justify-center px-6 sm:px-8 bg-primary text-primary-foreground font-semibold overflow-hidden text-sm sm:text-base"
+                >
+                  <BorderBeam size={120} duration={8} />
+                  <span className="relative z-10 flex items-center gap-2">
+                    {t("hero.cta")}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
                   </span>
-                ))}
-              </Marquee>
-            </div>
-          </motion.div>
+                </Link>
+                <Link
+                  href="#portfolio"
+                  className="inline-flex h-12 sm:h-14 w-full sm:w-auto sm:min-w-[12rem] items-center justify-center px-6 sm:px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors text-sm sm:text-base"
+                >
+                  {t("hero.viewProjects")}
+                </Link>
+              </div>
 
-          <HeroProductMockup projects={projects} />
+              <div className="w-full overflow-hidden border-y border-border/50 py-3">
+                <Marquee pauseOnHover className="[--duration:25s] max-w-full">
+                  {outcomeKeys.map((key) => (
+                    <span key={key} className="mx-4 sm:mx-5 editorial-label text-primary/80 whitespace-nowrap">
+                      {t(key)}
+                    </span>
+                  ))}
+                </Marquee>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="hidden lg:block min-w-0 w-full">
+            <HeroProductMockup projects={projects} />
+          </div>
         </div>
 
         <HeroTrustBar />
