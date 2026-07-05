@@ -55,8 +55,8 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
     <section className="relative border-b border-border overflow-hidden isolate">
       <div className="absolute inset-x-0 top-0 h-[min(100%,720px)] bg-background pointer-events-none -z-10" />
 
-      <div className="container relative z-10 px-4 md:px-6 pt-24 pb-12 md:pt-28 md:pb-16">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+      <div className="container relative z-10 pt-20 pb-10 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-14 items-start">
           <motion.div {...fadeIn}>
             <p className="editorial-label mb-4">{t("hero.badge")}</p>
 
@@ -66,14 +66,14 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
               {t("hero.title.part3")}
             </h1>
 
-            <p className="max-w-xl text-lg text-muted-foreground mb-8 leading-relaxed">
+            <p className="max-w-xl text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
               {config?.heroDescription || t("hero.subtitle")}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
               <Link
                 href="#contato"
-                className="group relative inline-flex h-14 items-center justify-center px-8 bg-primary text-primary-foreground font-semibold overflow-hidden"
+                className="group relative inline-flex h-12 sm:h-14 w-full sm:w-auto items-center justify-center px-6 sm:px-8 bg-primary text-primary-foreground font-semibold overflow-hidden"
               >
                 <BorderBeam size={120} duration={8} />
                 <span className="relative z-10 flex items-center gap-2">
@@ -83,7 +83,7 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
               </Link>
               <Link
                 href="#portfolio"
-                className="inline-flex h-14 items-center justify-center px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors"
+                className="inline-flex h-12 sm:h-14 w-full sm:w-auto items-center justify-center px-6 sm:px-8 border border-border font-semibold hover:border-primary hover:text-primary transition-colors"
               >
                 {t("hero.viewProjects")}
               </Link>
@@ -107,7 +107,7 @@ export function HeroSection({ config, projects = [] }: HeroSectionProps) {
       </div>
 
       {showScroll && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground z-10 pointer-events-none">
+        <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 flex-col items-center gap-1 text-muted-foreground z-10 pointer-events-none">
           <span className="editorial-label text-[10px]">{t("hero.scroll")}</span>
           <ArrowDown className="w-4 h-4 animate-bounce" />
         </div>

@@ -38,14 +38,14 @@ export function HeroTrustBar() {
   };
 
   return (
-    <div className="mt-10 lg:mt-12 pt-8 border-t border-border/60 space-y-8">
+    <div className="mt-8 sm:mt-10 lg:mt-12 pt-6 sm:pt-8 border-t border-border/60 space-y-6 sm:space-y-8">
       <div>
         <p className="editorial-label mb-4">{t("hero.clients.label")}</p>
         <Marquee pauseOnHover className="[--duration:35s]">
           {CLIENT_LOGOS.map((client) => (
             <div
               key={client.name}
-              className="mx-4 flex items-center gap-3 px-5 py-3 border border-border/70 bg-card/40 min-w-[180px]"
+              className="mx-3 sm:mx-4 flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2.5 sm:py-3 border border-border/70 bg-card/40 min-w-[9.5rem] sm:min-w-[180px]"
             >
               <span className="w-9 h-9 flex items-center justify-center bg-primary/10 text-primary font-display text-xs font-bold">
                 {client.initials}
@@ -57,7 +57,7 @@ export function HeroTrustBar() {
       </div>
 
       <div className="grid md:grid-cols-[1fr_auto] gap-6 items-start">
-        <div className="relative min-h-[120px] border border-border p-6 md:p-8 bg-card/30">
+        <div className="relative min-h-[100px] sm:min-h-[120px] border border-border p-4 sm:p-6 md:p-8 bg-card/30">
           <Quote className="w-5 h-5 text-primary mb-4 opacity-80" />
           <AnimatePresence mode="wait">
             <motion.div

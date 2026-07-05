@@ -35,8 +35,8 @@ export function ServicesSection() {
   return (
     <SectionTransition variant="none">
       <section id="servicos" className="section-padding border-t border-border bg-surface-elevated/30">
-        <div className="container px-4 md:px-6">
-          <div className="grid lg:grid-cols-12 gap-12 mb-16">
+        <div className="container">
+          <div className="grid lg:grid-cols-12 gap-8 sm:gap-12 mb-10 sm:mb-16">
             <div className="lg:col-span-5">
               <p className="editorial-label mb-6">02 — {t("nav.services")}</p>
               <TextReveal>
@@ -64,13 +64,13 @@ export function ServicesSection() {
                     <button
                       type="button"
                       onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className="w-full flex items-center gap-6 py-8 text-left group"
+                      className="w-full flex items-center gap-3 sm:gap-6 py-5 sm:py-8 text-left group min-w-0"
                     >
-                      <span className="font-display text-3xl text-foreground/20 group-hover:text-primary transition-colors w-12">
+                      <span className="font-display text-2xl sm:text-3xl text-foreground/20 group-hover:text-primary transition-colors w-8 sm:w-12 shrink-0">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <Icon className="w-5 h-5 text-primary shrink-0" />
-                      <span className="font-display text-xl md:text-2xl flex-1">{service.title}</span>
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                      <span className="font-display text-base sm:text-xl md:text-2xl flex-1 min-w-0 pr-2">{service.title}</span>
                       <ChevronDown
                         className={cn(
                           "w-5 h-5 text-muted-foreground transition-transform duration-300",
@@ -87,7 +87,7 @@ export function ServicesSection() {
                           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                           className="overflow-hidden"
                         >
-                          <p className="pb-8 pl-[4.5rem] md:pl-24 pr-12 text-muted-foreground max-w-2xl leading-relaxed">
+                          <p className="pb-5 sm:pb-8 px-1 sm:px-0 sm:pl-24 md:pr-12 text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
                             {service.description}
                           </p>
                         </motion.div>

@@ -76,8 +76,8 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
   return (
     <SectionTransition variant="fade">
       <section id="portfolio" className="section-padding border-t border-border">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+        <div className="container">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 sm:gap-8 mb-10 sm:mb-16">
             <div>
               <p className="editorial-label mb-6">03 — {t("nav.portfolio")}</p>
               <TextReveal>
@@ -110,7 +110,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
             </div>
           </div>
 
-          <div className="grid md:grid-cols-12 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => {
                 const isFeatured = index === 0;
@@ -124,7 +124,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     className={cn(
                       "group relative border border-border overflow-hidden cursor-pointer",
-                      isFeatured ? "md:col-span-7 md:row-span-2 min-h-[400px]" : "md:col-span-5 min-h-[280px]"
+                      isFeatured ? "md:col-span-7 md:row-span-2 min-h-[260px] sm:min-h-[320px] md:min-h-[400px]" : "md:col-span-5 min-h-[240px] sm:min-h-[280px]"
                     )}
                     onClick={() => {
                       setSelectedProject(project);
@@ -138,9 +138,9 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
                       <span className="editorial-label text-primary mb-2 block">{project.category}</span>
-                      <h3 className="font-display text-2xl md:text-3xl mb-2">{project.title}</h3>
+                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl mb-2">{project.title}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2 max-w-md">{project.description}</p>
                       <span className="inline-flex items-center gap-2 mt-4 text-sm font-medium group-hover:text-primary transition-colors">
                         {t("portfolio.viewDetails")}
@@ -156,7 +156,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
 
         <AnimatePresence>
           {selectedProject && (
-            <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 md:p-8">
+            <div className="fixed inset-0 z-[2000] flex items-stretch sm:items-center justify-center p-0 sm:p-4 md:p-8">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -169,7 +169,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 24 }}
-                className="relative w-full max-w-6xl max-h-[90vh] bg-card border border-border overflow-hidden flex flex-col lg:flex-row"
+                className="relative w-full h-full sm:h-auto sm:max-w-6xl sm:max-h-[90vh] bg-card border-0 sm:border border-border overflow-hidden flex flex-col lg:flex-row"
               >
                 <button
                   type="button"
@@ -180,7 +180,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                   <X className="w-5 h-5" />
                 </button>
 
-                <div className="relative w-full lg:w-[58%] h-[300px] lg:h-auto lg:min-h-[500px] bg-black group">
+                <div className="relative w-full lg:w-[58%] h-[38vh] sm:h-[300px] lg:h-auto lg:min-h-[500px] bg-black group shrink-0">
                   <Image
                     src={
                       selectedProject.images?.[currentImageIndex]?.url ||
@@ -196,7 +196,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-background/80 border border-border opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-background/80 border border-border sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                         aria-label="Previous"
                       >
                         <ChevronLeft className="w-5 h-5" />
@@ -204,7 +204,7 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-background/80 border border-border opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-background/80 border border-border sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                         aria-label="Next"
                       >
                         <ChevronRight className="w-5 h-5" />
@@ -213,10 +213,10 @@ export function PortfolioSection({ initialProjects = [] }: { initialProjects: Pr
                   )}
                 </div>
 
-                <div className="w-full lg:w-[42%] overflow-y-auto p-8 md:p-12">
-                  <p className="editorial-label text-primary mb-4">{t("portfolio.modal.showcase")}</p>
-                  <h2 className="font-display text-3xl md:text-4xl mb-4">{selectedProject.title}</h2>
-                  <p className="text-muted-foreground leading-relaxed mb-8">{selectedProject.description}</p>
+                <div className="w-full lg:w-[42%] overflow-y-auto p-5 sm:p-8 md:p-12 flex-1 min-h-0">
+                  <p className="editorial-label text-primary mb-3 sm:mb-4">{t("portfolio.modal.showcase")}</p>
+                  <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">{selectedProject.title}</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8">{selectedProject.description}</p>
 
                   {selectedProject.link && (
                     <a

@@ -41,7 +41,7 @@ export function SiteFooter({ config }: SiteFooterProps) {
           {marqueeKeys.map((key) => (
             <span
               key={key}
-              className="mx-8 font-display text-4xl md:text-6xl text-foreground/10 uppercase tracking-tighter whitespace-nowrap"
+              className="mx-4 sm:mx-8 font-display text-2xl sm:text-4xl md:text-6xl text-foreground/10 uppercase tracking-tighter whitespace-nowrap"
             >
               {t(key)}
             </span>
@@ -49,8 +49,8 @@ export function SiteFooter({ config }: SiteFooterProps) {
         </Marquee>
       </div>
 
-      <div className="container px-4 md:px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12">
+      <div className="container py-10 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <span className="w-8 h-8 bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">

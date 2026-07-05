@@ -27,19 +27,28 @@ export function SiteNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const closeMobile = () => setMobileOpen(false);
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled ? "py-3 glass-subtle border-b border-border/50" : "py-5 bg-transparent"
+        scrolled ? "py-2 sm:py-3 glass-subtle border-b border-border/50" : "py-3 sm:py-5 bg-transparent"
       )}
     >
-      <div className="container px-4 md:px-6 flex items-center justify-between gap-6">
-        <Link href="#" className="flex items-center gap-2 group">
+      <div className="container flex items-center justify-between gap-4 min-w-0">
+        <Link href="#" className="flex items-center gap-2 group shrink-0" onClick={closeMobile}>
           <span className="w-8 h-8 bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">
             E
           </span>
-          <span className="font-display font-bold text-lg tracking-tight group-hover:text-primary transition-colors">
+          <span className="font-display font-bold text-base sm:text-lg tracking-tight group-hover:text-primary transition-colors">
             ENERGON
           </span>
         </Link>
@@ -56,7 +65,7 @@ export function SiteNav() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3 shrink-0">
           <div className="flex items-center gap-1 text-xs font-medium">
             <button
               type="button"
@@ -91,8 +100,9 @@ export function SiteNav() {
 
         <button
           type="button"
-          className="lg:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2 -mr-2 shrink-0"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-expanded={mobileOpen}
           aria-label="Menu"
         >
           <span className={cn("block w-6 h-px bg-foreground transition-transform", mobileOpen && "rotate-45 translate-y-2")} />
@@ -105,22 +115,33 @@ export function SiteNav() {
         <motion.nav
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
-          className="lg:hidden border-t border-border/50 glass-subtle"
+          className="lg:hidden border-t border-border/50 glass-subtle max-h-[calc(100dvh-4rem)] overflow-y-auto"
         >
-          <div className="container px-4 py-6 flex flex-col gap-4">
+          <div className="container py-6 flex flex-col gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-lg font-display"
+                onClick={closeMobile}
+                className="text-lg font-display py-3 border-b border-border/40 last:border-0"
               >
                 {t(link.key)}
               </a>
             ))}
-            <div className="flex items-center gap-4 pt-4 border-t border-border">
-              <button type="button" onClick={() => setLanguage("pt")} className={language === "pt" ? "text-primary" : ""}>PT</button>
-              <button type="button" onClick={() => setLanguage("en")} className={language === "en" ? "text-primary" : ""}>EN</button>
+            <Link
+              href="#contato"
+              onClick={closeMobile}
+              className="mt-4 w-full h-12 flex items-center justify-center bg-primary text-primary-foreground font-semibold"
+            >
+              {t("nav.cta")}
+            </Link>
+            <div className="flex items-center gap-4 pt-6">
+              <button type="button" onClick={() => setLanguage("pt")} className={language === "pt" ? "text-primary font-medium" : ""}>
+                PT
+              </button>
+              <button type="button" onClick={() => setLanguage("en")} className={language === "en" ? "text-primary font-medium" : ""}>
+                EN
+              </button>
               <ThemeToggle />
             </div>
           </div>

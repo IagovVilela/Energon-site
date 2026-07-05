@@ -28,8 +28,8 @@ export function ProcessSection() {
   return (
     <SectionTransition variant="slideUp">
       <section id="processo" className="section-padding border-t border-border">
-        <div className="container px-4 md:px-6" ref={containerRef}>
-          <div className="mb-20">
+        <div className="container" ref={containerRef}>
+          <div className="mb-10 sm:mb-20">
             <p className="editorial-label mb-6">04 — {t("nav.process")}</p>
             <TextReveal>
               <h2 className="headline-lg">
@@ -47,7 +47,7 @@ export function ProcessSection() {
               <motion.div className="h-full bg-primary origin-left" style={{ width: lineWidth }} />
             </div>
 
-            <div className="grid md:grid-cols-4 gap-12 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-8">
               {steps.map((step, index) => (
                 <motion.div
                   key={step.title}

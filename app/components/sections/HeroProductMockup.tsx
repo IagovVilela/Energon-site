@@ -60,7 +60,7 @@ export function HeroProductMockup({ projects }: { projects: HeroProject[] }) {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      className="relative w-full max-w-xl mx-auto lg:mx-0 lg:ml-auto"
+      className="relative w-full max-w-xl mx-auto lg:mx-0 lg:ml-auto min-w-0"
     >
       <div className="absolute -inset-4 bg-primary/10 blur-3xl rounded-full pointer-events-none" />
 

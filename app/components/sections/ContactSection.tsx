@@ -46,8 +46,8 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
   return (
     <SectionTransition variant="slideUp">
       <section id="contato" className="section-padding border-t border-border">
-        <div className="container px-4 md:px-6">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-24">
             <div>
               <p className="editorial-label mb-6">05 — {t("nav.contact")}</p>
               <TextReveal>
@@ -61,7 +61,7 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
                 <BlurFade>
                   <div className="border-l-2 border-primary pl-6">
                     <p className="editorial-label mb-1">{t("contact.email")}</p>
-                    <a href={`mailto:${email}`} className="font-display text-xl hover:text-primary transition-colors">
+                    <a href={`mailto:${email}`} className="font-display text-lg sm:text-xl break-all hover:text-primary transition-colors">
                       {email}
                     </a>
                   </div>
@@ -90,7 +90,7 @@ export function ContactSection({ config }: { config?: ContactConfig | null }) {
             </div>
 
             <BlurFade delay={0.15}>
-              <form action={handleSubmit} className="border border-border p-8 md:p-10 space-y-6">
+              <form action={handleSubmit} className="border border-border p-5 sm:p-8 md:p-10 space-y-5 sm:space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="editorial-label block mb-2">{t("contact.form.name")}</label>

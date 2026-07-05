@@ -38,10 +38,10 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
 
   return (
     <SectionTransition variant="none">
-      <section id="sobre" className="py-14 md:py-20 border-t border-border">
-        <div className="container px-4 md:px-6">
-          <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
-            <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
+      <section id="sobre" className="py-12 sm:py-14 md:py-20 border-t border-border">
+        <div className="container">
+          <div className="grid lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-24">
+            <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
               <p className="editorial-label mb-6">01 — {t("nav.about")}</p>
               <TextReveal>
                 <h2 className="headline-lg mb-6">
@@ -55,10 +55,10 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                 </p>
               </TextReveal>
 
-              <div className="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-border">
+              <div className="grid grid-cols-3 gap-3 sm:gap-6 mt-8 sm:mt-12 pt-8 sm:pt-12 border-t border-border">
                 {stats.map((stat, i) => (
-                  <div key={stat.label}>
-                    <p className="font-display text-3xl md:text-4xl text-primary">
+                  <div key={stat.label} className="min-w-0">
+                    <p className="font-display text-2xl sm:text-3xl md:text-4xl text-primary">
                       {stat.prefix}
                       <NumberTicker value={stat.value} />
                       {stat.suffix}
@@ -69,7 +69,7 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
               </div>
             </div>
 
-            <div className="lg:col-span-7 space-y-16">
+            <div className="lg:col-span-7 space-y-10 sm:space-y-16">
               <div>
                 <p className="editorial-label mb-8">{t("about.whatYouGet.title")}</p>
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -91,15 +91,15 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                 </p>
                 <div className="space-y-0 divide-y divide-border border-y border-border">
                   {differentiators.map((item, i) => (
-                    <div key={item.title} className="py-8 group">
-                      <div className="flex items-start gap-6">
-                        <span className="font-display text-4xl text-foreground/20 group-hover:text-primary transition-colors">
+                    <div key={item.title} className="py-6 sm:py-8 group">
+                      <div className="flex items-start gap-4 sm:gap-6">
+                        <span className="font-display text-3xl sm:text-4xl text-foreground/20 group-hover:text-primary transition-colors shrink-0">
                           0{i + 1}
                         </span>
                         <div>
                           <div className="flex items-center gap-3 mb-2">
                             <item.icon className="w-4 h-4 text-primary" />
-                            <h3 className="font-display text-xl">{item.title}</h3>
+                            <h3 className="font-display text-lg sm:text-xl">{item.title}</h3>
                           </div>
                           <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
                             {item.desc}
@@ -115,7 +115,7 @@ export function AboutSection({ config }: { config?: AboutConfig | null }) {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="p-8 border border-primary/30 bg-primary/5"
+                className="p-5 sm:p-8 border border-primary/30 bg-primary/5"
               >
                 <h4 className="font-display text-2xl mb-2">{t("about.cta.title")}</h4>
                 <p className="text-muted-foreground mb-6">{t("about.cta.subtitle")}</p>
